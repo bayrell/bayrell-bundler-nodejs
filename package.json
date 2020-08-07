@@ -1,0 +1,20 @@
+{
+  "description": "Bayrell Bundler",
+  "license": "Apache-2.0",
+  "contributors": [
+    {
+      "name": "Ildar Bikmamatov",
+      "email": "support@bayrell.org"
+    }
+  ],
+  "files": [
+    "Plugins/*.js",
+    "*.js"
+  ],
+  "dependencies": {
+    "inotify": "^1.4.6"
+  },
+  "main": "index.js",
+  "name": "bayrell-bundler-nodejs",
+  "version": "0.10.0"
+}
