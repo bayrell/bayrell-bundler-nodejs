@@ -87,6 +87,28 @@ Object.assign(Bayrell.Bundler.BundlerHelper,
 		}
 		return Promise.resolve(items.toCollection(ctx));
 	},
+	/**
+	 * Find module by file_path
+	 */
+	findModule: function(ctx, modules, file_path)
+	{
+		var str_len = 0;
+		var find = null;
+		for (var i = 0;i < modules.count(ctx);i++)
+		{
+			var module = modules.item(ctx, i);
+			var module_path = module.getPath(ctx) + use("Runtime.rtl").toStr("/");
+			var __v0 = use("Runtime.rs");
+			var module_path_len = __v0.strlen(ctx, module_path);
+			var __v1 = use("Runtime.rs");
+			if (__v1.strpos(ctx, file_path, module_path) == 0 && module_path_len > str_len)
+			{
+				find = module;
+				str_len = module_path_len;
+			}
+		}
+		return find;
+	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{

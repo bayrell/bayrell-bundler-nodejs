@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Bundler == 'undefined') Bayrell.Bundler = {};
 Bayrell.Bundler.BuildFile = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Bundler.BuildFile.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Bundler.BuildFile.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Bundler.BuildFile.prototype.constructor = Bayrell.Bundler.BuildFile;
 Object.assign(Bayrell.Bundler.BuildFile.prototype,
 {
@@ -66,7 +66,7 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		this.stop = false;
 		this.parse_error = null;
 		this.log_files = true;
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -82,7 +82,7 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 			this.parse_error = o.parse_error;
 			this.log_files = o.log_files;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -95,7 +95,7 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		else if (k == "stop")this.stop = v;
 		else if (k == "parse_error")this.parse_error = v;
 		else if (k == "log_files")this.log_files = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -109,14 +109,14 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		else if (k == "stop")return this.stop;
 		else if (k == "parse_error")return this.parse_error;
 		else if (k == "log_files")return this.log_files;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.BuildFile";
 	},
 });
-Object.assign(Bayrell.Bundler.BuildFile, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Bundler.BuildFile, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Bundler.BuildFile,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -130,7 +130,7 @@ Object.assign(Bayrell.Bundler.BuildFile,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

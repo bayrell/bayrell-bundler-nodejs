@@ -86,7 +86,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		{
 			return Promise.resolve(build);
 		}
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		var json = ctx.config(ctx, "Bayrell.Bundler");
 		var languages = json.get(ctx, "languages");
 		var __v0 = use("Runtime.fs");
@@ -131,30 +131,27 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v0 = use("Runtime.rs");
 		var __v1 = use("Runtime.rs");
 		var file_path = __v0.substr(ctx, file_name, __v1.strlen(ctx, ctx.base_path));
-		var module = inotify.modules.findItem(ctx, (ctx, module) => 
-		{
-			var __v0 = use("Runtime.rs");
-			return __v0.strpos(ctx, file_path, module.getPath(ctx)) == 0;
-		});
+		var __v2 = use("Bayrell.Bundler.BundlerHelper");
+		var module = __v2.findModule(ctx, inotify.modules, file_path);
 		if (module == null)
 		{
 			return Promise.resolve();
 		}
 		/* Write file name */
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		/* Create build container */
-		var __v2 = use("Bayrell.Bundler.BuildFile");
-		var __v3 = use("Runtime.rs");
-		var file = new __v2(ctx, use("Runtime.Dict").from({"file_path":file_path,"ext":__v3.extname(ctx, file_path),"module":module,"languages":languages}));
+		var __v3 = use("Bayrell.Bundler.BuildFile");
+		var __v4 = use("Runtime.rs");
+		var file = new __v3(ctx, use("Runtime.Dict").from({"file_path":file_path,"ext":__v4.extname(ctx, file_path),"module":module,"languages":languages}));
 		/* Build file */
-		var __v4 = use("Bayrell.Bundler.BundlerHelper");
-		var file = ctx.chain(ctx, __v4.BUILD_FILE_CHECK, use("Runtime.Collection").from([file]));
+		var __v5 = use("Bayrell.Bundler.BundlerHelper");
+		var file = ctx.chain(ctx, __v5.BUILD_FILE_CHECK, use("Runtime.Collection").from([file]));
 		if (!file.stop)
 		{
-			var __v5 = use("Runtime.fs");
-			output.writeln(ctx, __v5.concat(ctx, ctx.base_path, file_path));
-			var __v6 = use("Bayrell.Bundler.BundlerHelper");
-			await ctx.chainAwait(ctx, __v6.BUILD_FILE, use("Runtime.Collection").from([file]));
+			var __v6 = use("Runtime.fs");
+			output.writeln(ctx, __v6.concat(ctx, ctx.base_path, file_path));
+			var __v7 = use("Bayrell.Bundler.BundlerHelper");
+			await ctx.chainAwait(ctx, __v7.BUILD_FILE, use("Runtime.Collection").from([file]));
 		}
 	},
 	/**
@@ -163,17 +160,18 @@ Object.assign(Bayrell.Bundler.Tasks,
 	watch: async function(ctx)
 	{
 		var json = ctx.config(ctx, "Bayrell.Bundler");
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		var modules_dir = json.get(ctx, "modules", use("Runtime.Collection").from([]));
 		var __v0 = use("Bayrell.Bundler.BundlerHelper");
 		var modules = await __v0.getModules(ctx);
 		/* Get notify driver */
 		var __v1 = use("Bayrell.Bundler.Inotify");
-		var inotify = new __v1(ctx);
+		var inotify = new __v1(ctx, "bundler-inotify");
 		await inotify.createNotify(ctx);
 		inotify.onChangeFile = this.onChangeFile.bind(this);
 		inotify.changeTimeout = 500;
 		inotify.modules = modules;
+		ctx.addObject(ctx, inotify);
 		for (var i = 0;i < modules_dir.count(ctx);i++)
 		{
 			var dir = modules_dir.item(ctx, i);
@@ -202,7 +200,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 	 */
 	modules: async function(ctx)
 	{
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		var __v0 = use("Bayrell.Bundler.BundlerHelper");
 		var modules = await __v0.getModules(ctx);
 		/* Output list of modules */
@@ -217,7 +215,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 	 */
 	make_link: async function(ctx, module_path, assets_path, kind)
 	{
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		var __v0 = use("Runtime.fs");
 		var src = __v0.concat(ctx, module_path, kind);
 		var __v1 = use("Runtime.fs");
@@ -266,7 +264,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var module_name = ctx.cli_args.get(ctx, 2, "");
 		var __v0 = use("Bayrell.Bundler.BundlerHelper");
 		var modules = await __v0.getModules(ctx);
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		var __v1 = use("Runtime.lib");
 		var module = modules.findItem(ctx, __v1.equalAttr(ctx, "module_name", module_name));
 		if (module_name == "")
@@ -286,7 +284,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		/* Chain module build */
 		var __v2 = use("Bayrell.Bundler.BundlerHelper");
 		var __v3 = use("Bayrell.Bundler.BuildModule");
-		await ctx.chainAwait(ctx, __v2.BUILD_MODULE, use("Runtime.Collection").from([new __v3(ctx, use("Runtime.Dict").from({"module":module}))]));
+		await ctx.chainAwait(ctx, __v2.BUILD_MODULE, use("Runtime.Collection").from([new __v3(ctx, use("Runtime.Dict").from({"module":module,"log_files":false}))]));
 	},
 	/**
 	 * Make all modules

@@ -145,7 +145,7 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		{
 			return Promise.resolve(file);
 		}
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		/* Parse file */
 		var __v0 = use("Bayrell.Lang.LangBay.ParserBay");
 		var parser = new __v0(ctx);
@@ -193,7 +193,7 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		{
 			return Promise.resolve(file);
 		}
-		var output = ctx.getProvider(ctx, "Runtime.Task.TaskOutputProvider");
+		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		/* Save file to other languages */
 		for (var i = 0;i < file.languages.count(ctx);i++)
 		{

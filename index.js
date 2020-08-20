@@ -18,7 +18,7 @@
 
 
 var exports = {
-	VERSION: '0.10.0',
+	VERSION: '0.10.2',
 	MODULE_NAME: 'Bayrell.Bundler',
 }
 
@@ -37,7 +37,6 @@ function add(name)
 
 add("Bayrell.Bundler.BuildFile");
 add("Bayrell.Bundler.BuildModule");
-add("Bayrell.Bundler.BundlerContainer");
 add("Bayrell.Bundler.BundlerHelper");
 add("Bayrell.Bundler.Inotify");
 add("Bayrell.Bundler.Module");

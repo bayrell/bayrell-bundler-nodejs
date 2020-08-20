@@ -21,9 +21,9 @@ if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Bundler == 'undefined') Bayrell.Bundler = {};
 Bayrell.Bundler.Module = function(ctx)
 {
-	use("Runtime.CoreStruct").apply(this, arguments);
+	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Bundler.Module.prototype = Object.create(use("Runtime.CoreStruct").prototype);
+Bayrell.Bundler.Module.prototype = Object.create(use("Runtime.BaseStruct").prototype);
 Bayrell.Bundler.Module.prototype.constructor = Bayrell.Bundler.Module;
 Object.assign(Bayrell.Bundler.Module.prototype,
 {
@@ -39,7 +39,7 @@ Object.assign(Bayrell.Bundler.Module.prototype,
 		var a = Object.getOwnPropertyNames(this);
 		this.module_name = "";
 		this.lib_path = "";
-		use("Runtime.CoreStruct").prototype._init.call(this,ctx);
+		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -48,27 +48,27 @@ Object.assign(Bayrell.Bundler.Module.prototype,
 			this.module_name = o.module_name;
 			this.lib_path = o.lib_path;
 		}
-		use("Runtime.CoreStruct").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
 		if (k == "module_name")this.module_name = v;
 		else if (k == "lib_path")this.lib_path = v;
-		else use("Runtime.CoreStruct").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
 		if (k == "module_name")return this.module_name;
 		else if (k == "lib_path")return this.lib_path;
-		return use("Runtime.CoreStruct").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Module";
 	},
 });
-Object.assign(Bayrell.Bundler.Module, use("Runtime.CoreStruct"));
+Object.assign(Bayrell.Bundler.Module, use("Runtime.BaseStruct"));
 Object.assign(Bayrell.Bundler.Module,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -82,7 +82,7 @@ Object.assign(Bayrell.Bundler.Module,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreStruct";
+		return "Runtime.BaseStruct";
 	},
 	getClassInfo: function(ctx)
 	{

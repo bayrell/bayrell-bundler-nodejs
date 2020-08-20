@@ -22,9 +22,10 @@ if (typeof Bayrell.Bundler == 'undefined') Bayrell.Bundler = {};
 const fs = use("Runtime.fs");
 const Map = use("Runtime.Map");
 const { Inotify } = require('inotify');
-Bayrell.Bundler.Inotify = function(ctx)
+Bayrell.Bundler.Inotify = function(ctx, object_name)
 {
-	use("Runtime.CoreObject").call(this, ctx);
+	if (object_name == undefined) object_name = "";
+	use("Runtime.Core.CoreObject").call(this, ctx, object_name);
 	var __v0 = use("Runtime.Map");
 	this.descriptors = new __v0(ctx);
 	var __v1 = use("Runtime.Map");
@@ -32,7 +33,7 @@ Bayrell.Bundler.Inotify = function(ctx)
 	var __v2 = use("Runtime.Map");
 	this.onChangeFileTimeouts = new __v2(ctx);
 };
-Bayrell.Bundler.Inotify.prototype = Object.create(use("Runtime.CoreObject").prototype);
+Bayrell.Bundler.Inotify.prototype = Object.create(use("Runtime.Core.CoreObject").prototype);
 Bayrell.Bundler.Inotify.prototype.constructor = Bayrell.Bundler.Inotify;
 Object.assign(Bayrell.Bundler.Inotify.prototype,
 {
@@ -190,7 +191,7 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		this.onChangeFileTimeouts = null;
 		this.onChangeFile = null;
 		this.changeTimeout = 500;
-		use("Runtime.CoreObject").prototype._init.call(this,ctx);
+		use("Runtime.Core.CoreObject").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
@@ -206,7 +207,7 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 			this.onChangeFile = o.onChangeFile;
 			this.changeTimeout = o.changeTimeout;
 		}
-		use("Runtime.CoreObject").prototype.assignObject.call(this,ctx,o);
+		use("Runtime.Core.CoreObject").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
@@ -219,7 +220,7 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		else if (k == "onChangeFileTimeouts")this.onChangeFileTimeouts = v;
 		else if (k == "onChangeFile")this.onChangeFile = v;
 		else if (k == "changeTimeout")this.changeTimeout = v;
-		else use("Runtime.CoreObject").prototype.assignValue.call(this,ctx,k,v);
+		else use("Runtime.Core.CoreObject").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
@@ -233,14 +234,14 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		else if (k == "onChangeFileTimeouts")return this.onChangeFileTimeouts;
 		else if (k == "onChangeFile")return this.onChangeFile;
 		else if (k == "changeTimeout")return this.changeTimeout;
-		return use("Runtime.CoreObject").prototype.takeValue.call(this,ctx,k,d);
+		return use("Runtime.Core.CoreObject").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Inotify";
 	},
 });
-Object.assign(Bayrell.Bundler.Inotify, use("Runtime.CoreObject"));
+Object.assign(Bayrell.Bundler.Inotify, use("Runtime.Core.CoreObject"));
 Object.assign(Bayrell.Bundler.Inotify,
 {
 	/* ======================= Class Init Functions ======================= */
@@ -254,7 +255,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 	},
 	getParentClassName: function()
 	{
-		return "Runtime.CoreObject";
+		return "Runtime.Core.CoreObject";
 	},
 	getClassInfo: function(ctx)
 	{
