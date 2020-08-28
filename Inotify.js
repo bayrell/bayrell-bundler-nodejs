@@ -185,7 +185,6 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		this.ctx = null;
 		this.inotify = null;
 		this.data = null;
-		this.modules = null;
 		this.descriptors = null;
 		this.watchers = null;
 		this.onChangeFileTimeouts = null;
@@ -200,7 +199,6 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 			this.ctx = o.ctx;
 			this.inotify = o.inotify;
 			this.data = o.data;
-			this.modules = o.modules;
 			this.descriptors = o.descriptors;
 			this.watchers = o.watchers;
 			this.onChangeFileTimeouts = o.onChangeFileTimeouts;
@@ -214,7 +212,6 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		if (k == "ctx")this.ctx = v;
 		else if (k == "inotify")this.inotify = v;
 		else if (k == "data")this.data = v;
-		else if (k == "modules")this.modules = v;
 		else if (k == "descriptors")this.descriptors = v;
 		else if (k == "watchers")this.watchers = v;
 		else if (k == "onChangeFileTimeouts")this.onChangeFileTimeouts = v;
@@ -228,7 +225,6 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		if (k == "ctx")return this.ctx;
 		else if (k == "inotify")return this.inotify;
 		else if (k == "data")return this.data;
-		else if (k == "modules")return this.modules;
 		else if (k == "descriptors")return this.descriptors;
 		else if (k == "watchers")return this.watchers;
 		else if (k == "onChangeFileTimeouts")return this.onChangeFileTimeouts;
@@ -279,7 +275,6 @@ Object.assign(Bayrell.Bundler.Inotify,
 			a.push("ctx");
 			a.push("inotify");
 			a.push("data");
-			a.push("modules");
 			a.push("descriptors");
 			a.push("watchers");
 			a.push("onChangeFileTimeouts");
@@ -308,13 +303,6 @@ Object.assign(Bayrell.Bundler.Inotify,
 			]),
 		});
 		if (field_name == "data") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.Inotify",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "modules") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
 			"name": field_name,

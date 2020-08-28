@@ -18,7 +18,7 @@
 
 
 var exports = {
-	VERSION: '0.10.2',
+	VERSION: '0.10.3',
 	MODULE_NAME: 'Bayrell.Bundler',
 }
 
@@ -35,14 +35,16 @@ function add(name)
 	var obj = require(path);
 }
 
-add("Bayrell.Bundler.BuildFile");
-add("Bayrell.Bundler.BuildModule");
-add("Bayrell.Bundler.BundlerHelper");
+add("Bayrell.Bundler.BundlerController");
+add("Bayrell.Bundler.ChainBundle");
+add("Bayrell.Bundler.ChainFile");
+add("Bayrell.Bundler.ChainModule");
 add("Bayrell.Bundler.Inotify");
 add("Bayrell.Bundler.Module");
 add("Bayrell.Bundler.Plugin");
 add("Bayrell.Bundler.Tasks");
 add("Bayrell.Bundler.Plugins.BayLang");
+add("Bayrell.Bundler.Plugins.Bundle");
 add("Bayrell.Bundler.ModuleDescription");
 
 module.exports = exports;

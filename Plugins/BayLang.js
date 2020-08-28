@@ -58,17 +58,15 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 	extendEntities: function(ctx, c, entities)
 	{
 		var __v0 = use("Runtime.Core.LambdaChain");
-		var __v1 = use("Bayrell.Bundler.BundlerHelper");
-		var __v2 = use("Runtime.Core.LambdaChain");
-		var __v3 = use("Bayrell.Bundler.BundlerHelper");
-		var __v4 = use("Bayrell.Bundler.BundlerHelper");
-		var __v5 = use("Runtime.Core.LambdaChain");
-		var __v6 = use("Bayrell.Bundler.BundlerHelper");
-		var __v7 = use("Bayrell.Bundler.BundlerHelper");
-		var __v8 = use("Runtime.Core.LambdaChain");
-		var __v9 = use("Bayrell.Bundler.BundlerHelper");
-		var __v10 = use("Bayrell.Bundler.BundlerHelper");
-		return entities.pushIm(ctx, new __v0(ctx, use("Runtime.Dict").from({"name":__v1.BUILD_FILE_CHECK,"value":"Bayrell.Bundler.Plugins.BayLang::check","pos":0}))).pushIm(ctx, new __v2(ctx, use("Runtime.Dict").from({"name":__v3.BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::readFile","is_async":true,"pos":__v4.BUILD_FILE_READ_FILE}))).pushIm(ctx, new __v5(ctx, use("Runtime.Dict").from({"name":__v6.BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::parseFile","is_async":true,"pos":__v7.BUILD_FILE_PARSE_FILE}))).pushIm(ctx, new __v8(ctx, use("Runtime.Dict").from({"name":__v9.BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::saveFile","is_async":true,"pos":__v10.BUILD_FILE_SAVE_FILE})));
+		var __v1 = use("Bayrell.Bundler.BundlerController");
+		var __v2 = use("Bayrell.Bundler.BundlerController");
+		var __v3 = use("Runtime.Core.LambdaChain");
+		var __v4 = use("Bayrell.Bundler.BundlerController");
+		var __v5 = use("Bayrell.Bundler.BundlerController");
+		var __v6 = use("Runtime.Core.LambdaChain");
+		var __v7 = use("Bayrell.Bundler.BundlerController");
+		var __v8 = use("Bayrell.Bundler.BundlerController");
+		return entities.pushIm(ctx, new __v0(ctx, use("Runtime.Dict").from({"name":__v1.CHAIN_BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::readFile","is_async":true,"pos":__v2.BUILD_FILE_READ_FILE}))).pushIm(ctx, new __v3(ctx, use("Runtime.Dict").from({"name":__v4.CHAIN_BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::parseFile","is_async":true,"pos":__v5.BUILD_FILE_PARSE_FILE}))).pushIm(ctx, new __v6(ctx, use("Runtime.Dict").from({"name":__v7.CHAIN_BUILD_FILE,"value":"Bayrell.Bundler.Plugins.BayLang::saveFile","is_async":true,"pos":__v8.BUILD_FILE_SAVE_FILE})));
 	},
 	/**
 	 * Check file
@@ -77,75 +75,54 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 	{
 		if (file.stop)
 		{
-			return file.copy(ctx, use("Runtime.Dict").from({"stop":true}));
+			return false;
 		}
 		if (file.getBayPath(ctx) == "")
 		{
-			return file.copy(ctx, use("Runtime.Dict").from({"stop":true}));
+			return false;
 		}
 		if (file.module == null)
 		{
-			return file.copy(ctx, use("Runtime.Dict").from({"stop":true}));
+			return false;
 		}
-		if (file.ext != "bay")
+		if (file.ext != "bay" && file.ext != "ui")
 		{
-			return file.copy(ctx, use("Runtime.Dict").from({"stop":true}));
+			return false;
 		}
-		return file;
+		return true;
 	},
 	/**
 	 * Read file
 	 */
-	readFile: async function(ctx, file)
+	readFile: async function(ctx, control, file)
 	{
-		if (file.stop)
+		if (!this.check(ctx, file))
 		{
-			return Promise.resolve(file);
-		}
-		if (file.getBayPath(ctx) == "")
-		{
-			return Promise.resolve(file);
-		}
-		if (file.module == null)
-		{
-			return Promise.resolve(file);
-		}
-		if (file.ext != "bay")
-		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
 		if (file.content != "")
 		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
 		/* Read file */
 		var __v0 = use("Runtime.fs");
 		var content = await __v0.readFile(ctx, file.file_path, "utf8", ctx.base_path);
 		file = Runtime.rtl.setAttr(ctx, file, Runtime.Collection.from(["content"]), content);
-		return Promise.resolve(file);
+		return Promise.resolve(use("Runtime.Collection").from([control,file]));
 	},
 	/**
 	 * Parse file
 	 */
-	parseFile: async function(ctx, file)
+	parseFile: async function(ctx, control, file)
 	{
-		if (file.stop)
+		if (!this.check(ctx, file))
 		{
-			return Promise.resolve(file);
-		}
-		if (file.module == null)
-		{
-			return Promise.resolve(file);
-		}
-		if (file.ext != "bay")
-		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
 		if (file.content == "")
 		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
-		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		/* Parse file */
 		var __v0 = use("Bayrell.Lang.LangBay.ParserBay");
 		var parser = new __v0(ctx);
@@ -163,43 +140,39 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 				var e = _ex;
 				
 				file = Runtime.rtl.setAttr(ctx, file, Runtime.Collection.from(["parse_error"]), e);
-				output.writeln(ctx, "Parser error: " + use("Runtime.rtl").toStr(e.getErrorMessage(ctx)));
+				control.writeln(ctx, "Parser error: " + use("Runtime.rtl").toStr(e.getErrorMessage(ctx)));
 			}
 			else
 			{
 				throw _ex;
 			}
 		}
-		return Promise.resolve(file);
+		return Promise.resolve(use("Runtime.Collection").from([control,file]));
 	},
 	/**
 	 * Save file
 	 */
-	saveFile: async function(ctx, file)
+	saveFile: async function(ctx, control, file)
 	{
-		if (file.stop)
+		if (!this.check(ctx, file))
 		{
-			return Promise.resolve(file);
-		}
-		if (file.module == null)
-		{
-			return Promise.resolve(file);
-		}
-		if (file.ext != "bay")
-		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
 		if (file.ast == null)
 		{
-			return Promise.resolve(file);
+			return Promise.resolve(use("Runtime.Collection").from([control,file]));
 		}
-		var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
 		/* Save file to other languages */
-		for (var i = 0;i < file.languages.count(ctx);i++)
+		for (var i = 0;i < control.languages.count(ctx);i++)
 		{
-			var lang = file.languages.item(ctx, i);
-			var translator = this.getTranslator(ctx, lang);
-			var file_path = this.getDestFilePath(ctx, file, lang);
+			var lang = control.languages.item(ctx, i);
+			var translator = this.getTranslator(ctx, control, file, lang);
+			if (translator == null)
+			{
+				continue;
+			}
+			/* Get destination path */
+			var file_path = this.getDestFilePath(ctx, control, file, lang);
 			/* Translate */
 			var __v0 = use("Bayrell.Lang.LangUtils");
 			var content = __v0.translate(ctx, translator, file.ast);
@@ -210,23 +183,23 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			await __v2.mkdir(ctx, dir_name, ctx.base_path);
 			var __v3 = use("Runtime.fs");
 			await __v3.saveFile(ctx, file_path, content, "utf8", ctx.base_path);
-			if (file.log_files)
+			if (control.log_files)
 			{
 				var __v4 = use("Runtime.fs");
-				output.writeln(ctx, "=>" + use("Runtime.rtl").toStr(__v4.concat(ctx, ctx.base_path, file_path)));
+				control.writeln(ctx, "=>" + use("Runtime.rtl").toStr(__v4.concat(ctx, ctx.base_path, file_path)));
 			}
 		}
 		/* Output ok */
-		if (file.log_files)
+		if (control.log_files)
 		{
-			output.writeln(ctx, "Ok");
+			control.writeln(ctx, "Ok");
 		}
-		return Promise.resolve(file);
+		return Promise.resolve(use("Runtime.Collection").from([control,file]));
 	},
 	/**
 	 * Get dest file path
 	 */
-	getDestFilePath: function(ctx, file, lang)
+	getDestFilePath: function(ctx, control, file, lang)
 	{
 		var __v0 = use("Runtime.fs");
 		var file_path = __v0.concatArr(ctx, use("Runtime.Collection").from([file.module.getPath(ctx),lang,file.getBayPath(ctx)]));
@@ -234,16 +207,22 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		{
 			var __v1 = use("Runtime.re");
 			file_path = __v1.replace(ctx, "\\.bay$", ".php", file_path);
+			var __v2 = use("Runtime.re");
+			file_path = __v2.replace(ctx, "\\.ui$", ".php", file_path);
 		}
 		else if (lang == "es6")
 		{
-			var __v2 = use("Runtime.re");
-			file_path = __v2.replace(ctx, "\\.bay$", ".js", file_path);
+			var __v3 = use("Runtime.re");
+			file_path = __v3.replace(ctx, "\\.bay$", ".js", file_path);
+			var __v4 = use("Runtime.re");
+			file_path = __v4.replace(ctx, "\\.ui$", ".js", file_path);
 		}
 		else if (lang == "nodejs")
 		{
-			var __v3 = use("Runtime.re");
-			file_path = __v3.replace(ctx, "\\.bay$", ".js", file_path);
+			var __v5 = use("Runtime.re");
+			file_path = __v5.replace(ctx, "\\.bay$", ".js", file_path);
+			var __v6 = use("Runtime.re");
+			file_path = __v6.replace(ctx, "\\.ui$", ".js", file_path);
 		}
 		else
 		{
@@ -254,7 +233,7 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 	/**
 	 * Get translator
 	 */
-	getTranslator: function(ctx, lang)
+	getTranslator: function(ctx, control, file, lang)
 	{
 		if (lang == "php")
 		{
@@ -263,13 +242,39 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		}
 		if (lang == "es6")
 		{
-			var __v0 = use("Bayrell.Lang.LangES6.TranslatorES6");
-			return new __v0(ctx, use("Runtime.Dict").from({"use_module_name":false,"use_strict":true,"enable_async_await":true,"emulate_async_await":true}));
+			/* Get config */
+			var __v0 = use("Runtime.Monad");
+			var __v1 = new __v0(ctx, control.config);
+			__v1 = __v1.attr(ctx, "plugins_opts");
+			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
+			__v1 = __v1.attr(ctx, "es6");
+			var conf = __v1.value(ctx);
+			/* Get settings */
+			var use_module_name = conf.get(ctx, "use_module_name", false);
+			var use_strict = conf.get(ctx, "use_strict", true);
+			var enable_async_await = conf.get(ctx, "enable_async_await", true);
+			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
+			/* Create translator */
+			var __v2 = use("Bayrell.Lang.LangES6.TranslatorES6");
+			return new __v2(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
 		}
 		if (lang == "nodejs")
 		{
-			var __v0 = use("Bayrell.Lang.LangNode.TranslatorNode");
-			return new __v0(ctx, use("Runtime.Dict").from({"use_module_name":true,"use_strict":true,"enable_async_await":true,"emulate_async_await":false}));
+			/* Get config */
+			var __v0 = use("Runtime.Monad");
+			var __v1 = new __v0(ctx, control.config);
+			__v1 = __v1.attr(ctx, "plugins_opts");
+			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
+			__v1 = __v1.attr(ctx, "nodejs");
+			var conf = __v1.value(ctx);
+			/* Get settings */
+			var use_module_name = conf.get(ctx, "use_module_name", false);
+			var use_strict = conf.get(ctx, "use_strict", true);
+			var enable_async_await = conf.get(ctx, "enable_async_await", true);
+			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
+			/* Create translator */
+			var __v2 = use("Bayrell.Lang.LangNode.TranslatorNode");
+			return new __v2(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
 		}
 		return null;
 	},

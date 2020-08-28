@@ -19,13 +19,13 @@ var use = require('bayrell').use;
  */
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Bundler == 'undefined') Bayrell.Bundler = {};
-Bayrell.Bundler.BuildFile = function(ctx)
+Bayrell.Bundler.ChainFile = function(ctx)
 {
 	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Bundler.BuildFile.prototype = Object.create(use("Runtime.BaseStruct").prototype);
-Bayrell.Bundler.BuildFile.prototype.constructor = Bayrell.Bundler.BuildFile;
-Object.assign(Bayrell.Bundler.BuildFile.prototype,
+Bayrell.Bundler.ChainFile.prototype = Object.create(use("Runtime.BaseStruct").prototype);
+Bayrell.Bundler.ChainFile.prototype.constructor = Bayrell.Bundler.ChainFile;
+Object.assign(Bayrell.Bundler.ChainFile.prototype,
 {
 	/**
 	 * Returns relative module path
@@ -36,11 +36,16 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		{
 			return "";
 		}
-		var module_path = this.module.getPath(ctx);
-		var __v0 = use("Runtime.rs");
-		var module_path_arr = __v0.explode(ctx, "/", module_path);
-		var __v1 = use("Runtime.rs");
-		var file_path_arr = __v1.explode(ctx, "/", this.file_path);
+		var __v0 = use("Runtime.fs");
+		var module_path = __v0.addFirstSlash(ctx, this.module.getPath(ctx));
+		var __v1 = use("Runtime.fs");
+		var file_path = __v1.addFirstSlash(ctx, this.file_path);
+		var __v2 = use("Runtime.rs");
+		var __v3 = use("Runtime.fs");
+		var module_path_arr = __v2.explode(ctx, __v3.DIRECTORY_SEPARATOR, module_path);
+		var __v4 = use("Runtime.rs");
+		var __v5 = use("Runtime.fs");
+		var file_path_arr = __v4.explode(ctx, __v5.DIRECTORY_SEPARATOR, file_path);
 		var i = 0;
 		while (i < module_path_arr.count(ctx) && i < file_path_arr.count(ctx) && Runtime.rtl.get(ctx, module_path_arr, i) == Runtime.rtl.get(ctx, file_path_arr, i))
 		{
@@ -48,8 +53,10 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		}
 		if (i < file_path_arr.count(ctx) && Runtime.rtl.get(ctx, file_path_arr, i) == "bay")
 		{
-			var __v2 = use("Runtime.rs");
-			return "/" + use("Runtime.rtl").toStr(__v2.join(ctx, "/", file_path_arr.slice(ctx, i + 1)));
+			var __v6 = use("Runtime.fs");
+			var __v7 = use("Runtime.rs");
+			var __v8 = use("Runtime.fs");
+			return __v6.DIRECTORY_SEPARATOR + use("Runtime.rtl").toStr(__v7.join(ctx, __v8.DIRECTORY_SEPARATOR, file_path_arr.slice(ctx, i + 1)));
 		}
 		return "";
 	},
@@ -60,27 +67,23 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		this.file_path = "";
 		this.ext = "";
 		this.module = null;
-		this.languages = null;
 		this.content = "";
 		this.ast = null;
 		this.stop = false;
 		this.parse_error = null;
-		this.log_files = true;
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
-		if (o instanceof use("Bayrell.Bundler.BuildFile"))
+		if (o instanceof use("Bayrell.Bundler.ChainFile"))
 		{
 			this.file_path = o.file_path;
 			this.ext = o.ext;
 			this.module = o.module;
-			this.languages = o.languages;
 			this.content = o.content;
 			this.ast = o.ast;
 			this.stop = o.stop;
 			this.parse_error = o.parse_error;
-			this.log_files = o.log_files;
 		}
 		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
@@ -89,12 +92,10 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		if (k == "file_path")this.file_path = v;
 		else if (k == "ext")this.ext = v;
 		else if (k == "module")this.module = v;
-		else if (k == "languages")this.languages = v;
 		else if (k == "content")this.content = v;
 		else if (k == "ast")this.ast = v;
 		else if (k == "stop")this.stop = v;
 		else if (k == "parse_error")this.parse_error = v;
-		else if (k == "log_files")this.log_files = v;
 		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
@@ -103,22 +104,40 @@ Object.assign(Bayrell.Bundler.BuildFile.prototype,
 		if (k == "file_path")return this.file_path;
 		else if (k == "ext")return this.ext;
 		else if (k == "module")return this.module;
-		else if (k == "languages")return this.languages;
 		else if (k == "content")return this.content;
 		else if (k == "ast")return this.ast;
 		else if (k == "stop")return this.stop;
 		else if (k == "parse_error")return this.parse_error;
-		else if (k == "log_files")return this.log_files;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
-		return "Bayrell.Bundler.BuildFile";
+		return "Bayrell.Bundler.ChainFile";
 	},
 });
-Object.assign(Bayrell.Bundler.BuildFile, use("Runtime.BaseStruct"));
-Object.assign(Bayrell.Bundler.BuildFile,
+Object.assign(Bayrell.Bundler.ChainFile, use("Runtime.BaseStruct"));
+Object.assign(Bayrell.Bundler.ChainFile,
 {
+	/**
+	 * Check file
+	 * Chain: BundlerController::CHAIN_BUILD_FILE_CHECK
+	 */
+	checkFile: function(ctx, control, file)
+	{
+		if (file.stop)
+		{
+			return use("Runtime.Collection").from([control,file.copy(ctx, use("Runtime.Dict").from({"stop":true}))]);
+		}
+		if (file.getBayPath(ctx) == "")
+		{
+			return use("Runtime.Collection").from([control,file.copy(ctx, use("Runtime.Dict").from({"stop":true}))]);
+		}
+		if (file.module == null)
+		{
+			return use("Runtime.Collection").from([control,file.copy(ctx, use("Runtime.Dict").from({"stop":true}))]);
+		}
+		return use("Runtime.Collection").from([control,file]);
+	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -126,7 +145,7 @@ Object.assign(Bayrell.Bundler.BuildFile,
 	},
 	getCurrentClassName: function()
 	{
-		return "Bayrell.Bundler.BuildFile";
+		return "Bayrell.Bundler.ChainFile";
 	},
 	getParentClassName: function()
 	{
@@ -139,8 +158,8 @@ Object.assign(Bayrell.Bundler.BuildFile,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Bundler.BuildFile",
-			"name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
+			"name": "Bayrell.Bundler.ChainFile",
 			"annotations": Collection.from([
 			]),
 		});
@@ -154,12 +173,10 @@ Object.assign(Bayrell.Bundler.BuildFile,
 			a.push("file_path");
 			a.push("ext");
 			a.push("module");
-			a.push("languages");
 			a.push("content");
 			a.push("ast");
 			a.push("stop");
 			a.push("parse_error");
-			a.push("log_files");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -170,63 +187,49 @@ Object.assign(Bayrell.Bundler.BuildFile,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		if (field_name == "file_path") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "ext") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "module") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "languages") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "ast") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "stop") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "parse_error") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "log_files") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildFile",
+			"class_name": "Bayrell.Bundler.ChainFile",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -243,5 +246,5 @@ Object.assign(Bayrell.Bundler.BuildFile,
 	{
 		return null;
 	},
-});use.add(Bayrell.Bundler.BuildFile);
-module.exports = Bayrell.Bundler.BuildFile;
+});use.add(Bayrell.Bundler.ChainFile);
+module.exports = Bayrell.Bundler.ChainFile;

@@ -19,63 +19,59 @@ var use = require('bayrell').use;
  */
 if (typeof Bayrell == 'undefined') Bayrell = {};
 if (typeof Bayrell.Bundler == 'undefined') Bayrell.Bundler = {};
-Bayrell.Bundler.BuildModule = function(ctx)
+Bayrell.Bundler.ChainBundle = function(ctx)
 {
 	use("Runtime.BaseStruct").apply(this, arguments);
 };
-Bayrell.Bundler.BuildModule.prototype = Object.create(use("Runtime.BaseStruct").prototype);
-Bayrell.Bundler.BuildModule.prototype.constructor = Bayrell.Bundler.BuildModule;
-Object.assign(Bayrell.Bundler.BuildModule.prototype,
+Bayrell.Bundler.ChainBundle.prototype = Object.create(use("Runtime.BaseStruct").prototype);
+Bayrell.Bundler.ChainBundle.prototype.constructor = Bayrell.Bundler.ChainBundle;
+Object.assign(Bayrell.Bundler.ChainBundle.prototype,
 {
 	_init: function(ctx)
 	{
 		var defProp = use('Runtime.rtl').defProp;
 		var a = Object.getOwnPropertyNames(this);
-		this.module = null;
-		this.module_path = "";
-		this.files = null;
-		this.stop = false;
-		this.log_files = true;
+		this.modules = null;
+		this.bundle_content = "";
+		this.lang = "";
+		this.dest = "";
 		use("Runtime.BaseStruct").prototype._init.call(this,ctx);
 	},
 	assignObject: function(ctx,o)
 	{
-		if (o instanceof use("Bayrell.Bundler.BuildModule"))
+		if (o instanceof use("Bayrell.Bundler.ChainBundle"))
 		{
-			this.module = o.module;
-			this.module_path = o.module_path;
-			this.files = o.files;
-			this.stop = o.stop;
-			this.log_files = o.log_files;
+			this.modules = o.modules;
+			this.bundle_content = o.bundle_content;
+			this.lang = o.lang;
+			this.dest = o.dest;
 		}
 		use("Runtime.BaseStruct").prototype.assignObject.call(this,ctx,o);
 	},
 	assignValue: function(ctx,k,v)
 	{
-		if (k == "module")this.module = v;
-		else if (k == "module_path")this.module_path = v;
-		else if (k == "files")this.files = v;
-		else if (k == "stop")this.stop = v;
-		else if (k == "log_files")this.log_files = v;
+		if (k == "modules")this.modules = v;
+		else if (k == "bundle_content")this.bundle_content = v;
+		else if (k == "lang")this.lang = v;
+		else if (k == "dest")this.dest = v;
 		else use("Runtime.BaseStruct").prototype.assignValue.call(this,ctx,k,v);
 	},
 	takeValue: function(ctx,k,d)
 	{
 		if (d == undefined) d = null;
-		if (k == "module")return this.module;
-		else if (k == "module_path")return this.module_path;
-		else if (k == "files")return this.files;
-		else if (k == "stop")return this.stop;
-		else if (k == "log_files")return this.log_files;
+		if (k == "modules")return this.modules;
+		else if (k == "bundle_content")return this.bundle_content;
+		else if (k == "lang")return this.lang;
+		else if (k == "dest")return this.dest;
 		return use("Runtime.BaseStruct").prototype.takeValue.call(this,ctx,k,d);
 	},
 	getClassName: function(ctx)
 	{
-		return "Bayrell.Bundler.BuildModule";
+		return "Bayrell.Bundler.ChainBundle";
 	},
 });
-Object.assign(Bayrell.Bundler.BuildModule, use("Runtime.BaseStruct"));
-Object.assign(Bayrell.Bundler.BuildModule,
+Object.assign(Bayrell.Bundler.ChainBundle, use("Runtime.BaseStruct"));
+Object.assign(Bayrell.Bundler.ChainBundle,
 {
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -84,7 +80,7 @@ Object.assign(Bayrell.Bundler.BuildModule,
 	},
 	getCurrentClassName: function()
 	{
-		return "Bayrell.Bundler.BuildModule";
+		return "Bayrell.Bundler.ChainBundle";
 	},
 	getParentClassName: function()
 	{
@@ -97,8 +93,8 @@ Object.assign(Bayrell.Bundler.BuildModule,
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
-			"class_name": "Bayrell.Bundler.BuildModule",
-			"name": "Bayrell.Bundler.BuildModule",
+			"class_name": "Bayrell.Bundler.ChainBundle",
+			"name": "Bayrell.Bundler.ChainBundle",
 			"annotations": Collection.from([
 			]),
 		});
@@ -109,11 +105,10 @@ Object.assign(Bayrell.Bundler.BuildModule,
 		if (f==undefined) f=0;
 		if ((f|3)==3)
 		{
-			a.push("module");
-			a.push("module_path");
-			a.push("files");
-			a.push("stop");
-			a.push("log_files");
+			a.push("modules");
+			a.push("bundle_content");
+			a.push("lang");
+			a.push("dest");
 		}
 		return use("Runtime.Collection").from(a);
 	},
@@ -122,37 +117,30 @@ Object.assign(Bayrell.Bundler.BuildModule,
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
 		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
-		if (field_name == "module") return new IntrospectionInfo(ctx, {
+		if (field_name == "modules") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildModule",
+			"class_name": "Bayrell.Bundler.ChainBundle",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "module_path") return new IntrospectionInfo(ctx, {
+		if (field_name == "bundle_content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildModule",
+			"class_name": "Bayrell.Bundler.ChainBundle",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "files") return new IntrospectionInfo(ctx, {
+		if (field_name == "lang") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildModule",
+			"class_name": "Bayrell.Bundler.ChainBundle",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
-		if (field_name == "stop") return new IntrospectionInfo(ctx, {
+		if (field_name == "dest") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildModule",
-			"name": field_name,
-			"annotations": Collection.from([
-			]),
-		});
-		if (field_name == "log_files") return new IntrospectionInfo(ctx, {
-			"kind": IntrospectionInfo.ITEM_FIELD,
-			"class_name": "Bayrell.Bundler.BuildModule",
+			"class_name": "Bayrell.Bundler.ChainBundle",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -169,5 +157,5 @@ Object.assign(Bayrell.Bundler.BuildModule,
 	{
 		return null;
 	},
-});use.add(Bayrell.Bundler.BuildModule);
-module.exports = Bayrell.Bundler.BuildModule;
+});use.add(Bayrell.Bundler.ChainBundle);
+module.exports = Bayrell.Bundler.ChainBundle;

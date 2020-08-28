@@ -74,19 +74,21 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	entities: function(ctx)
 	{
 		var __v0 = use("Runtime.Core.LambdaChainDeclare");
-		var __v1 = use("Bayrell.Bundler.BundlerHelper");
+		var __v1 = use("Bayrell.Bundler.BundlerController");
 		var __v2 = use("Runtime.Core.LambdaChainDeclare");
-		var __v3 = use("Bayrell.Bundler.BundlerHelper");
+		var __v3 = use("Bayrell.Bundler.BundlerController");
 		var __v4 = use("Runtime.Core.LambdaChainDeclare");
-		var __v5 = use("Bayrell.Bundler.BundlerHelper");
+		var __v5 = use("Bayrell.Bundler.BundlerController");
 		var __v6 = use("Runtime.Core.LambdaChainDeclare");
-		var __v7 = use("Bayrell.Bundler.BundlerHelper");
+		var __v7 = use("Bayrell.Bundler.BundlerController");
 		var __v8 = use("Runtime.Core.Entity");
 		var __v9 = use("Runtime.Core.LambdaChain");
-		var __v10 = use("Bayrell.Bundler.BundlerHelper");
+		var __v10 = use("Bayrell.Bundler.BundlerController");
 		var __v11 = use("Runtime.Core.LambdaChain");
-		var __v12 = use("Bayrell.Bundler.BundlerHelper");
-		return use("Runtime.Collection").from([new __v0(ctx, use("Runtime.Dict").from({"name":__v1.CHANGE_FILE_CHAIN})),new __v2(ctx, use("Runtime.Dict").from({"name":__v3.BUILD_PROJECT})),new __v4(ctx, use("Runtime.Dict").from({"name":__v5.BUILD_MODULE})),new __v6(ctx, use("Runtime.Dict").from({"name":__v7.BUILD_FILE})),new __v8(ctx, use("Runtime.Dict").from({"name":"Bayrell.Bundler.Tasks"})),new __v9(ctx, use("Runtime.Dict").from({"name":__v10.BUILD_MODULE,"value":"Bayrell.Bundler.Tasks::loadFiles","is_async":true,"pos":1000})),new __v11(ctx, use("Runtime.Dict").from({"name":__v12.BUILD_MODULE,"value":"Bayrell.Bundler.Tasks::build","is_async":true,"pos":2000}))]);
+		var __v12 = use("Bayrell.Bundler.BundlerController");
+		var __v13 = use("Runtime.Core.LambdaChain");
+		var __v14 = use("Bayrell.Bundler.BundlerController");
+		return use("Runtime.Collection").from([new __v0(ctx, use("Runtime.Dict").from({"name":__v1.CHAIN_BUNDLE})),new __v2(ctx, use("Runtime.Dict").from({"name":__v3.CHAIN_BUILD_MODULE})),new __v4(ctx, use("Runtime.Dict").from({"name":__v5.CHAIN_BUILD_FILE})),new __v6(ctx, use("Runtime.Dict").from({"name":__v7.CHAIN_BUILD_FILE_CHECK})),new __v8(ctx, use("Runtime.Dict").from({"name":"Bayrell.Bundler.Tasks"})),new __v9(ctx, use("Runtime.Dict").from({"name":__v10.CHAIN_BUILD_FILE_CHECK,"value":"Bayrell.Bundler.ChainFile::checkFile","pos":0})),new __v11(ctx, use("Runtime.Dict").from({"name":__v12.CHAIN_BUILD_MODULE,"value":"Bayrell.Bundler.ChainModule::loadFiles","is_async":true,"pos":1000})),new __v13(ctx, use("Runtime.Dict").from({"name":__v14.CHAIN_BUILD_MODULE,"value":"Bayrell.Bundler.ChainModule::buildModule","is_async":true,"pos":2000}))]);
 	},
 	/**
 	 * Returns context settings
