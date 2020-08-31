@@ -18,7 +18,7 @@
 
 
 var exports = {
-	VERSION: '0.10.3',
+	VERSION: '0.10.4',
 	MODULE_NAME: 'Bayrell.Bundler',
 }
 

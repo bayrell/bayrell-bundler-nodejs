@@ -206,7 +206,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			/* Resources folder */
 			this.make_link(ctx, module_path, assets_path, "resources");
 			/* ES6 folder */
-			this.make_link(ctx, module_path, assets_path, "es6");
+			/*static::make_link(module_path, assets_path, "es6");*/
 		}
 	},
 	/**
