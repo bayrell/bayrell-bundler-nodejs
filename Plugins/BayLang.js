@@ -245,7 +245,7 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			/* Get config */
 			var __v0 = use("Runtime.Monad");
 			var __v1 = new __v0(ctx, control.config);
-			__v1 = __v1.attr(ctx, "plugins_opts");
+			__v1 = __v1.attr(ctx, "options");
 			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
 			__v1 = __v1.attr(ctx, "es6");
 			var conf = __v1.value(ctx);
@@ -263,7 +263,7 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			/* Get config */
 			var __v0 = use("Runtime.Monad");
 			var __v1 = new __v0(ctx, control.config);
-			__v1 = __v1.attr(ctx, "plugins_opts");
+			__v1 = __v1.attr(ctx, "options");
 			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
 			__v1 = __v1.attr(ctx, "nodejs");
 			var conf = __v1.value(ctx);

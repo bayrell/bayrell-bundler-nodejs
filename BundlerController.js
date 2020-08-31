@@ -106,12 +106,12 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		{
 			return Promise.resolve();
 		}
-		var build_conf = this.constructor.getBuildConf(ctx, this.config, module);
-		if (build_conf == null)
+		var bundle_conf = this.constructor.getBundleConf(ctx, this.config, module);
+		if (bundle_conf == null)
 		{
 			return Promise.resolve();
 		}
-		await this.chainBundle(ctx, build_conf);
+		await this.chainBundle(ctx, bundle_conf);
 	},
 	/**
 	 * Run module build chain
@@ -278,23 +278,23 @@ Object.assign(Bayrell.Bundler.BundlerController,
 	/**
 	 * Get build conf
 	 */
-	getBuildConf: function(ctx, conf, module)
+	getBundleConf: function(ctx, conf, module)
 	{
 		var module_name = module.module_name;
 		var __v0 = use("Runtime.Monad");
 		var __v1 = new __v0(ctx, conf);
-		__v1 = __v1.attr(ctx, "build");
-		var build_items = __v1.value(ctx);
-		for (var i = 0;i < build_items.count(ctx);i++)
+		__v1 = __v1.attr(ctx, "bundles");
+		var bundle_items = __v1.value(ctx);
+		for (var i = 0;i < bundle_items.count(ctx);i++)
 		{
-			var build_conf = build_items.item(ctx, i);
+			var bundle_conf = bundle_items.item(ctx, i);
 			var __v2 = use("Runtime.Monad");
-			var __v3 = new __v2(ctx, build_conf);
+			var __v3 = new __v2(ctx, bundle_conf);
 			__v3 = __v3.attr(ctx, "modules");
-			var build_modules = __v3.value(ctx);
-			if (build_modules.indexOf(ctx, module_name) != -1)
+			var modules = __v3.value(ctx);
+			if (modules.indexOf(ctx, module_name) != -1)
 			{
-				return build_conf;
+				return bundle_conf;
 			}
 		}
 		return null;

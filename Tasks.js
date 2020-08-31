@@ -119,7 +119,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		/* Build bundles */
 		var __v1 = use("Runtime.Monad");
 		var __v2 = new __v1(ctx, control.config);
-		__v2 = __v2.attr(ctx, "build");
+		__v2 = __v2.attr(ctx, "bundles");
 		var build_items = __v2.value(ctx);
 		for (var i = 0;i < build_items.count(ctx);i++)
 		{
