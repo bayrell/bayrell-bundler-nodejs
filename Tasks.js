@@ -267,7 +267,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v0 = use("Runtime.Task.TaskList");
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Bundler.Tasks",
@@ -287,7 +287,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx)
@@ -310,7 +310,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v0 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
@@ -327,7 +327,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v1 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
@@ -345,7 +345,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v2 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
@@ -364,7 +364,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v3 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
@@ -384,7 +384,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v4 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
@@ -405,7 +405,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			var __v5 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",

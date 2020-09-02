@@ -58,7 +58,7 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.5";
+		return "0.10.6";
 	},
 	/**
 	 * Returns required modules
@@ -151,7 +151,7 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Bundler.ModuleDescription",
@@ -170,7 +170,7 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx)

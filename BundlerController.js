@@ -74,7 +74,7 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		}
 		/* Chain module build */
 		var __v0 = use("Bayrell.Bundler.ChainModule");
-		await ctx.chainAwait(ctx, this.constructor.CHAIN_BUILD_MODULE, use("Runtime.Collection").from([this,new __v0(ctx, use("Runtime.Dict").from({"module":module}))]));
+		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUILD_MODULE, use("Runtime.Collection").from([this,new __v0(ctx, use("Runtime.Dict").from({"module":module}))]));
 	},
 	/**
 	 * Run file build chain
@@ -92,7 +92,7 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 	chainBuildFile: async function(ctx, file)
 	{
 		var __v0 = use("Runtime.Monad");
-		var __v1 = new __v0(ctx, await ctx.chainAwait(ctx, this.constructor.CHAIN_BUILD_FILE, use("Runtime.Collection").from([this,file])));
+		var __v1 = new __v0(ctx, await ctx.chainAsync(ctx, this.constructor.CHAIN_BUILD_FILE, use("Runtime.Collection").from([this,file])));
 		__v1 = __v1.attr(ctx, 1);
 		return Promise.resolve(__v1.value(ctx));
 	},
@@ -147,7 +147,7 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		__v8 = __v8.attr(ctx, "dest");
 		var dest = __v8.value(ctx);
 		var __v9 = use("Bayrell.Bundler.ChainBundle");
-		await ctx.chainAwait(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v9(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
+		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v9(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
 	},
 	_init: function(ctx)
 	{
@@ -316,7 +316,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Bundler.BundlerController",
@@ -343,7 +343,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		if (field_name == "CHAIN_BUILD_MODULE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",

@@ -73,7 +73,7 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 			return Promise.resolve(use("Runtime.Collection").from([control,chain]));
 		}
 		var __v0 = use("Runtime.Vector");
-		var files_content = new __v0(ctx);
+		var assets_content = new __v0(ctx);
 		var modules = chain.modules;
 		for (var i = 0;i < modules.count(ctx);i++)
 		{
@@ -88,14 +88,14 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 			var __v5 = use("Runtime.rtl");
 			__v3 = __v3.call(ctx, __v5.json_decode.bind(__v5));
 			var module_json = __v3.value(ctx);
-			/* Get module files */
+			/* Get module assets */
 			var __v6 = use("Runtime.Monad");
 			var __v7 = new __v6(ctx, module_json);
-			__v7 = __v7.attr(ctx, "files");
-			var files = __v7.value(ctx);
-			for (var j = 0;j < files.count(ctx);j++)
+			__v7 = __v7.attr(ctx, "assets");
+			var assets = __v7.value(ctx);
+			for (var j = 0;j < assets.count(ctx);j++)
 			{
-				var file_name = files.item(ctx, j);
+				var file_name = assets.item(ctx, j);
 				var __v8 = use("Runtime.fs");
 				var file_path = __v8.concatArr(ctx, use("Runtime.Collection").from([module_path,"es6",file_name])) + use("Runtime.rtl").toStr(".js");
 				/* Read file */
@@ -107,13 +107,13 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 					var file_content = await __v10.readFile(ctx, file_path, "utf8", ctx.base_path);
 					if (file_content != "")
 					{
-						files_content.push(ctx, file_content);
+						assets_content.push(ctx, file_content);
 					}
 				}
 			}
 		}
 		var __v1 = use("Runtime.rs");
-		chain = Runtime.rtl.setAttr(ctx, chain, Runtime.Collection.from(["bundle_content"]), __v1.join(ctx, "\n", files_content));
+		chain = Runtime.rtl.setAttr(ctx, chain, Runtime.Collection.from(["bundle_content"]), __v1.join(ctx, "\n", assets_content));
 		return Promise.resolve(use("Runtime.Collection").from([control,chain]));
 	},
 	/**
@@ -152,7 +152,7 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_CLASS,
 			"class_name": "Bayrell.Bundler.Plugins.Bundle",
@@ -171,7 +171,7 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 	{
 		var Collection = use("Runtime.Collection");
 		var Dict = use("Runtime.Dict");
-		var IntrospectionInfo = use("Runtime.Annotations.IntrospectionInfo");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
 	getMethodsList: function(ctx)
