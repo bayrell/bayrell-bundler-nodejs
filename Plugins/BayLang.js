@@ -248,6 +248,8 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			__v1 = __v1.attr(ctx, "options");
 			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
 			__v1 = __v1.attr(ctx, "es6");
+			var __v2 = use("Runtime.rtl");
+			__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Dict", use("Runtime.Dict").from({})));
 			var conf = __v1.value(ctx);
 			/* Get settings */
 			var use_module_name = conf.get(ctx, "use_module_name", false);
@@ -255,8 +257,8 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			var enable_async_await = conf.get(ctx, "enable_async_await", true);
 			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
 			/* Create translator */
-			var __v2 = use("Bayrell.Lang.LangES6.TranslatorES6");
-			return new __v2(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
+			var __v3 = use("Bayrell.Lang.LangES6.TranslatorES6");
+			return new __v3(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
 		}
 		if (lang == "nodejs")
 		{
@@ -266,6 +268,8 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			__v1 = __v1.attr(ctx, "options");
 			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
 			__v1 = __v1.attr(ctx, "nodejs");
+			var __v2 = use("Runtime.rtl");
+			__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Dict", use("Runtime.Dict").from({})));
 			var conf = __v1.value(ctx);
 			/* Get settings */
 			var use_module_name = conf.get(ctx, "use_module_name", false);
@@ -273,8 +277,8 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			var enable_async_await = conf.get(ctx, "enable_async_await", true);
 			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
 			/* Create translator */
-			var __v2 = use("Bayrell.Lang.LangNode.TranslatorNode");
-			return new __v2(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
+			var __v3 = use("Bayrell.Lang.LangNode.TranslatorNode");
+			return new __v3(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
 		}
 		return null;
 	},

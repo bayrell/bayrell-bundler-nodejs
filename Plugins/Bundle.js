@@ -87,24 +87,28 @@ Object.assign(Bayrell.Bundler.Plugins.Bundle,
 			var __v3 = new __v2(ctx, await __v4.readFile(ctx, module_json_path, "utf8", ctx.base_path));
 			var __v5 = use("Runtime.rtl");
 			__v3 = __v3.call(ctx, __v5.json_decode.bind(__v5));
+			var __v6 = use("Runtime.rtl");
+			__v3 = __v3.monad(ctx, __v6.m_def(ctx, use("Runtime.Dict").from({})));
 			var module_json = __v3.value(ctx);
 			/* Get module assets */
-			var __v6 = use("Runtime.Monad");
-			var __v7 = new __v6(ctx, module_json);
-			__v7 = __v7.attr(ctx, "assets");
-			var assets = __v7.value(ctx);
+			var __v7 = use("Runtime.Monad");
+			var __v8 = new __v7(ctx, module_json);
+			__v8 = __v8.attr(ctx, "assets");
+			var __v9 = use("Runtime.rtl");
+			__v8 = __v8.monad(ctx, __v9.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			var assets = __v8.value(ctx);
 			for (var j = 0;j < assets.count(ctx);j++)
 			{
 				var file_name = assets.item(ctx, j);
-				var __v8 = use("Runtime.fs");
-				var file_path = __v8.concatArr(ctx, use("Runtime.Collection").from([module_path,"es6",file_name])) + use("Runtime.rtl").toStr(".js");
+				var __v10 = use("Runtime.fs");
+				var file_path = __v10.concatArr(ctx, use("Runtime.Collection").from([module_path,"es6",file_name])) + use("Runtime.rtl").toStr(".js");
 				/* Read file */
-				var __v9 = use("Runtime.fs");
-				var file_exists = await __v9.exists(ctx, file_path, ctx.base_path);
+				var __v11 = use("Runtime.fs");
+				var file_exists = await __v11.exists(ctx, file_path, ctx.base_path);
 				if (file_exists)
 				{
-					var __v10 = use("Runtime.fs");
-					var file_content = await __v10.readFile(ctx, file_path, "utf8", ctx.base_path);
+					var __v12 = use("Runtime.fs");
+					var file_content = await __v12.readFile(ctx, file_path, "utf8", ctx.base_path);
 					if (file_content != "")
 					{
 						assets_content.push(ctx, file_content);

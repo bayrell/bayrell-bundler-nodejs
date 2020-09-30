@@ -94,19 +94,21 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v2 = use("Runtime.Monad");
 		var __v3 = new __v2(ctx, control.config);
 		__v3 = __v3.attr(ctx, "modules");
+		var __v4 = use("Runtime.rtl");
+		__v3 = __v3.monad(ctx, __v4.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
 		var modules_dir = __v3.value(ctx);
 		for (var i = 0;i < modules_dir.count(ctx);i++)
 		{
 			var dir = modules_dir.item(ctx, i);
-			var __v4 = use("Runtime.fs");
-			var dir_path = __v4.concat(ctx, ctx.base_path, dir);
+			var __v5 = use("Runtime.fs");
+			var dir_path = __v5.concat(ctx, ctx.base_path, dir);
 			await inotify.addFolder(ctx, dir_path);
 		}
 		control.writeln(ctx, "Start watch");
 		while (true)
 		{
-			var __v4 = use("Runtime.rtl");
-			await __v4.sleep(ctx, 100);
+			var __v5 = use("Runtime.rtl");
+			await __v5.sleep(ctx, 100);
 		}
 	},
 	/**
@@ -120,17 +122,21 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v1 = use("Runtime.Monad");
 		var __v2 = new __v1(ctx, control.config);
 		__v2 = __v2.attr(ctx, "bundles");
+		var __v3 = use("Runtime.rtl");
+		__v2 = __v2.monad(ctx, __v3.m_def(ctx, use("Runtime.Collection").from([])));
 		var build_items = __v2.value(ctx);
 		for (var i = 0;i < build_items.count(ctx);i++)
 		{
-			var __v3 = use("Runtime.Map");
-			var builded_modules = new __v3(ctx);
+			var __v4 = use("Runtime.Map");
+			var builded_modules = new __v4(ctx);
 			var bundle_conf = build_items.item(ctx, i);
 			/* Get params */
-			var __v4 = use("Runtime.Monad");
-			var __v5 = new __v4(ctx, bundle_conf);
-			__v5 = __v5.attr(ctx, "modules");
-			var build_modules = __v5.value(ctx);
+			var __v5 = use("Runtime.Monad");
+			var __v6 = new __v5(ctx, bundle_conf);
+			__v6 = __v6.attr(ctx, "modules");
+			var __v7 = use("Runtime.rtl");
+			__v6 = __v6.monad(ctx, __v7.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			var build_modules = __v6.value(ctx);
 			/* Build modules */
 			for (var j = 0;j < build_modules.count(ctx);j++)
 			{

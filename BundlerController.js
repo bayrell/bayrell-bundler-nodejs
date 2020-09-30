@@ -42,6 +42,8 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 			var __v0 = use("Runtime.Monad");
 			var __v1 = new __v0(ctx, this.config);
 			__v1 = __v1.attr(ctx, "modules");
+			var __v2 = use("Runtime.rtl");
+			__v1 = __v1.monad(ctx, __v2.m_def(ctx, use("Runtime.Collection").from([])));
 			var modules_dir = __v1.value(ctx);
 			this.modules = await this.constructor.loadModules(ctx, modules_dir);
 		}
@@ -123,31 +125,39 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		var __v1 = use("Runtime.Monad");
 		var __v2 = new __v1(ctx, bundle_conf);
 		__v2 = __v2.attr(ctx, "modules");
+		var __v3 = use("Runtime.rtl");
+		__v2 = __v2.monad(ctx, __v3.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
 		var build_modules = __v2.value(ctx);
 		for (var j = 0;j < build_modules.count(ctx);j++)
 		{
 			var module_name = build_modules.item(ctx, j);
-			var __v3 = use("Runtime.lib");
-			var module = this.modules.findItem(ctx, __v3.equalAttr(ctx, "module_name", module_name));
+			var __v4 = use("Runtime.lib");
+			var module = this.modules.findItem(ctx, __v4.equalAttr(ctx, "module_name", module_name));
 			if (module != null)
 			{
 				modules_to_build.push(ctx, module);
 			}
 		}
-		var __v3 = use("Runtime.Monad");
-		var __v4 = new __v3(ctx, bundle_conf);
-		__v4 = __v4.attr(ctx, "dest");
-		var dest = __v4.value(ctx);
-		var __v5 = use("Runtime.Monad");
-		var __v6 = new __v5(ctx, bundle_conf);
-		__v6 = __v6.attr(ctx, "lang");
-		var lang = __v6.value(ctx);
+		var __v4 = use("Runtime.Monad");
+		var __v5 = new __v4(ctx, bundle_conf);
+		__v5 = __v5.attr(ctx, "dest");
+		var __v6 = use("Runtime.rtl");
+		__v5 = __v5.monad(ctx, __v6.m_to(ctx, "string", ""));
+		var dest = __v5.value(ctx);
 		var __v7 = use("Runtime.Monad");
 		var __v8 = new __v7(ctx, bundle_conf);
-		__v8 = __v8.attr(ctx, "dest");
-		var dest = __v8.value(ctx);
-		var __v9 = use("Bayrell.Bundler.ChainBundle");
-		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v9(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
+		__v8 = __v8.attr(ctx, "lang");
+		var __v9 = use("Runtime.rtl");
+		__v8 = __v8.monad(ctx, __v9.m_to(ctx, "string", ""));
+		var lang = __v8.value(ctx);
+		var __v10 = use("Runtime.Monad");
+		var __v11 = new __v10(ctx, bundle_conf);
+		__v11 = __v11.attr(ctx, "dest");
+		var __v12 = use("Runtime.rtl");
+		__v11 = __v11.monad(ctx, __v12.m_to(ctx, "string", ""));
+		var dest = __v11.value(ctx);
+		var __v13 = use("Bayrell.Bundler.ChainBundle");
+		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v13(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
 	},
 	_init: function(ctx)
 	{
@@ -284,14 +294,18 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		var __v0 = use("Runtime.Monad");
 		var __v1 = new __v0(ctx, conf);
 		__v1 = __v1.attr(ctx, "bundles");
+		var __v2 = use("Runtime.rtl");
+		__v1 = __v1.monad(ctx, __v2.m_def(ctx, use("Runtime.Collection").from([])));
 		var bundle_items = __v1.value(ctx);
 		for (var i = 0;i < bundle_items.count(ctx);i++)
 		{
 			var bundle_conf = bundle_items.item(ctx, i);
-			var __v2 = use("Runtime.Monad");
-			var __v3 = new __v2(ctx, bundle_conf);
-			__v3 = __v3.attr(ctx, "modules");
-			var modules = __v3.value(ctx);
+			var __v3 = use("Runtime.Monad");
+			var __v4 = new __v3(ctx, bundle_conf);
+			__v4 = __v4.attr(ctx, "modules");
+			var __v5 = use("Runtime.rtl");
+			__v4 = __v4.monad(ctx, __v5.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			var modules = __v4.value(ctx);
 			if (modules.indexOf(ctx, module_name) != -1)
 			{
 				return bundle_conf;
