@@ -18,7 +18,7 @@
 
 
 var exports = {
-	VERSION: '0.10.7',
+	VERSION: '0.10.8',
 	MODULE_NAME: 'Bayrell.Bundler',
 }
 
@@ -41,6 +41,7 @@ add("Bayrell.Bundler.ChainFile");
 add("Bayrell.Bundler.ChainModule");
 add("Bayrell.Bundler.Inotify");
 add("Bayrell.Bundler.Module");
+add("Bayrell.Bundler.ModuleFile");
 add("Bayrell.Bundler.Plugin");
 add("Bayrell.Bundler.Tasks");
 add("Bayrell.Bundler.Plugins.BayLang");

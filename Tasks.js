@@ -116,8 +116,153 @@ Object.assign(Bayrell.Bundler.Tasks,
 	 */
 	task_build: async function(ctx)
 	{
+		var __v0 = use("Runtime.Map");
+		var builded_modules = new __v0(ctx);
+		var __v1 = use("Bayrell.Bundler.BundlerController");
+		var control = await __v1.getController(ctx);
+		var bundle_name = ctx.cli_args.get(ctx, 2, "");
+		var __v2 = use("Runtime.Monad");
+		var __v3 = new __v2(ctx, control.config);
+		__v3 = __v3.attr(ctx, "bundles");
+		var __v4 = use("Runtime.rtl");
+		__v3 = __v3.monad(ctx, __v4.m_def(ctx, use("Runtime.Collection").from([])));
+		var bundles = __v3.value(ctx);
+		var find_bundle = null;
+		if (bundle_name == "")
+		{
+			control.writeln(ctx, "Type bundle name:");
+			bundles.each(ctx, (ctx, item) => 
+			{
+				if (item.has(ctx, "name"))
+				{
+					control.writeln(ctx, "  " + use("Runtime.rtl").toStr(Runtime.rtl.get(ctx, item, "name")));
+				}
+			});
+		}
+		/* Find bundle by name */
+		var __v5 = use("Runtime.lib");
+		find_bundle = bundles.findItem(ctx, __v5.equalAttr(ctx, "name", bundle_name));
+		if (find_bundle == null)
+		{
+			control.writeln(ctx, "Wrong bundle name " + use("Runtime.rtl").toStr(bundle_name));
+			return Promise.resolve();
+		}
+		/* Get bundle modules */
+		var __v6 = use("Runtime.Monad");
+		var __v7 = new __v6(ctx, find_bundle);
+		__v7 = __v7.attr(ctx, "modules");
+		var __v8 = use("Runtime.rtl");
+		__v7 = __v7.monad(ctx, __v8.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+		var bundle_modules = __v7.value(ctx);
+		/* Make bundle modules */
+		for (var i = 0;i < control.modules.count(ctx);i++)
+		{
+			var module = control.modules.item(ctx, i);
+			/* Find module name */
+			var pos = bundle_modules.indexOf(ctx, module.module_name);
+			if (pos == -1)
+			{
+				continue;
+			}
+			await control.chainBuildModuleByName(ctx, module.module_name);
+			builded_modules.set(ctx, module.module_name, true);
+		}
+		/* Build modules */
+		for (var j = 0;j < bundle_modules.count(ctx);j++)
+		{
+			var module_name = bundle_modules.item(ctx, j);
+			if (builded_modules.has(ctx, module_name))
+			{
+				continue;
+			}
+			if (Runtime.rtl.get(ctx, module_name, 0) == "@")
+			{
+				continue;
+			}
+			await control.chainBuildModuleByName(ctx, module_name);
+			builded_modules.set(ctx, module_name, true);
+		}
+		/* Make bundle */
+		await control.chainBundle(ctx, find_bundle);
+	},
+	/**
+	 * Build project
+	 */
+	task_build_all: async function(ctx)
+	{
+		var __v0 = use("Runtime.Map");
+		var builded_modules = new __v0(ctx);
+		var __v1 = use("Bayrell.Bundler.BundlerController");
+		var control = await __v1.getController(ctx);
+		var __v2 = use("Runtime.Monad");
+		var __v3 = new __v2(ctx, control.config);
+		__v3 = __v3.attr(ctx, "bundles");
+		var __v4 = use("Runtime.rtl");
+		__v3 = __v3.monad(ctx, __v4.m_def(ctx, use("Runtime.Collection").from([])));
+		var bundles = __v3.value(ctx);
+		/* Make all modules */
+		for (var i = 0;i < control.modules.count(ctx);i++)
+		{
+			var module = control.modules.item(ctx, i);
+			await control.chainBuildModuleByName(ctx, module.module_name);
+			builded_modules.set(ctx, module.module_name, true);
+		}
+		/* Build all bundles */
+		for (var i = 0;i < bundles.count(ctx);i++)
+		{
+			var bundle_conf = bundles.item(ctx, i);
+			/* Get modules */
+			var __v5 = use("Runtime.Monad");
+			var __v6 = new __v5(ctx, bundle_conf);
+			__v6 = __v6.attr(ctx, "modules");
+			var __v7 = use("Runtime.rtl");
+			__v6 = __v6.monad(ctx, __v7.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			var bundle_modules = __v6.value(ctx);
+			/* Build modules */
+			for (var j = 0;j < bundle_modules.count(ctx);j++)
+			{
+				var module_name = bundle_modules.item(ctx, j);
+				if (builded_modules.has(ctx, module_name))
+				{
+					continue;
+				}
+				if (Runtime.rtl.get(ctx, module_name, 0) == "@")
+				{
+					continue;
+				}
+				await control.chainBuildModuleByName(ctx, module_name);
+				builded_modules.set(ctx, module_name, true);
+			}
+			/* Make bundle */
+			await control.chainBundle(ctx, bundle_conf);
+		}
+	},
+	/**
+	 * Make module
+	 */
+	task_make: async function(ctx)
+	{
+		var sz = ctx.cli_args.count(ctx);
+		var module_name = ctx.cli_args.get(ctx, 2, "");
 		var __v0 = use("Bayrell.Bundler.BundlerController");
 		var control = await __v0.getController(ctx);
+		var module = control.findModuleByName(ctx, module_name);
+		if (module_name == "")
+		{
+			control.writeln(ctx, "Type module name:");
+			control.modules.each(ctx, (ctx, item) => 
+			{
+				control.writeln(ctx, "  " + use("Runtime.rtl").toStr(item.module_name));
+			});
+			return Promise.resolve();
+		}
+		else if (module == null)
+		{
+			control.writeln(ctx, "Wrong module name " + use("Runtime.rtl").toStr(module_name));
+			return Promise.resolve();
+		}
+		/* Run module build chain */
+		await control.chainBuildModuleByName(ctx, module_name);
 		/* Build bundles */
 		var __v1 = use("Runtime.Monad");
 		var __v2 = new __v1(ctx, control.config);
@@ -127,29 +272,21 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var build_items = __v2.value(ctx);
 		for (var i = 0;i < build_items.count(ctx);i++)
 		{
-			var __v4 = use("Runtime.Map");
-			var builded_modules = new __v4(ctx);
 			var bundle_conf = build_items.item(ctx, i);
-			/* Get params */
-			var __v5 = use("Runtime.Monad");
-			var __v6 = new __v5(ctx, bundle_conf);
-			__v6 = __v6.attr(ctx, "modules");
-			var __v7 = use("Runtime.rtl");
-			__v6 = __v6.monad(ctx, __v7.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
-			var build_modules = __v6.value(ctx);
-			/* Build modules */
-			for (var j = 0;j < build_modules.count(ctx);j++)
+			/* Get modules */
+			var __v4 = use("Runtime.Monad");
+			var __v5 = new __v4(ctx, bundle_conf);
+			__v5 = __v5.attr(ctx, "modules");
+			var __v6 = use("Runtime.rtl");
+			__v5 = __v5.monad(ctx, __v6.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+			var build_modules = __v5.value(ctx);
+			/* Find module name */
+			var pos = build_modules.indexOf(ctx, module_name);
+			if (pos != -1)
 			{
-				var module_name = build_modules.item(ctx, j);
-				if (builded_modules.has(ctx, module_name))
-				{
-					continue;
-				}
-				await control.chainBuildModuleByName(ctx, module_name);
-				builded_modules.set(ctx, module_name, true);
+				/* Make bundle */
+				await control.chainBundle(ctx, bundle_conf);
 			}
-			/* Make bundle */
-			await control.chainBundle(ctx, bundle_conf);
 		}
 	},
 	/**
@@ -182,17 +319,21 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v4 = use("Runtime.fs");
 		var rel = __v4.relative(ctx, assets_path, src);
 		var __v5 = use("Runtime.fs");
-		await __v5.mkdir(ctx, assets_path, ctx.base_path);
-		var __v6 = use("Runtime.fs");
-		if (await __v6.exists(ctx, src, ctx.base_path))
+		if (await __v5.exists(ctx, src, ctx.base_path))
 		{
+			var __v6 = use("Runtime.fs");
+			await __v6.mkdir(ctx, assets_path, ctx.base_path);
 			var __v7 = use("Runtime.fs");
-			await __v7.unlink(ctx, dest, ctx.base_path);
-			var __v8 = use("Runtime.fs");
-			await __v8.symlink(ctx, rel, dest, ctx.base_path);
-			var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
-			var __v9 = use("Runtime.fs");
-			output.writeln(ctx, __v9.concat(ctx, ctx.base_path, dest) + use("Runtime.rtl").toStr(" -> ") + use("Runtime.rtl").toStr(rel));
+			if (await __v7.exists(ctx, src, ctx.base_path))
+			{
+				var __v8 = use("Runtime.fs");
+				await __v8.unlink(ctx, dest, ctx.base_path);
+				var __v9 = use("Runtime.fs");
+				await __v9.symlink(ctx, rel, dest, ctx.base_path);
+				var output = ctx.getDriver(ctx, "Runtime.Task.TaskDriver");
+				var __v10 = use("Runtime.fs");
+				output.writeln(ctx, __v10.concat(ctx, ctx.base_path, dest) + use("Runtime.rtl").toStr(" -> ") + use("Runtime.rtl").toStr(rel));
+			}
 		}
 	},
 	/**
@@ -202,57 +343,23 @@ Object.assign(Bayrell.Bundler.Tasks,
 	{
 		var __v0 = use("Bayrell.Bundler.BundlerController");
 		var control = await __v0.getController(ctx);
+		var __v1 = use("Runtime.Monad");
+		var __v2 = new __v1(ctx, control.config);
+		__v2 = __v2.attr(ctx, "assets");
+		var __v3 = use("Runtime.rtl");
+		__v2 = __v2.monad(ctx, __v3.m_to(ctx, "string", "assets/"));
+		var assets_dir = __v2.value(ctx);
 		for (var i = 0;i < control.modules.count(ctx);i++)
 		{
 			var module = control.modules.item(ctx, i);
-			var __v1 = use("Runtime.fs");
-			var module_path = __v1.concat(ctx, module.lib_path, module.module_name);
-			var __v2 = use("Runtime.fs");
-			var assets_path = __v2.concat(ctx, "/web/assets/", module.module_name);
+			var __v4 = use("Runtime.fs");
+			var module_path = __v4.concat(ctx, module.lib_path, module.module_name);
+			var __v5 = use("Runtime.fs");
+			var assets_path = __v5.concat(ctx, assets_dir, module.module_name);
 			/* Resources folder */
-			this.make_link(ctx, module_path, assets_path, "resources");
+			await this.make_link(ctx, module_path, assets_path, "resources");
 			/* ES6 folder */
 			/*static::make_link(module_path, assets_path, "es6");*/
-		}
-	},
-	/**
-	 * Make module
-	 */
-	task_make: async function(ctx)
-	{
-		var sz = ctx.cli_args.count(ctx);
-		var module_name = ctx.cli_args.get(ctx, 2, "");
-		var __v0 = use("Bayrell.Bundler.BundlerController");
-		var control = await __v0.getController(ctx);
-		var module = control.findModuleByName(ctx, module_name);
-		if (module_name == "")
-		{
-			control.writeln(ctx, "Type module name:");
-			control.modules.each(ctx, (ctx, item) => 
-			{
-				control.writeln(ctx, "  " + use("Runtime.rtl").toStr(item.module_name));
-			});
-			return Promise.resolve();
-		}
-		else if (module == null)
-		{
-			control.writeln(ctx, "Wrong module name " + use("Runtime.rtl").toStr(module_name));
-			return Promise.resolve();
-		}
-		/* Run module build chain */
-		await control.chainBuildModuleByName(ctx, module_name);
-	},
-	/**
-	 * Make all modules
-	 */
-	task_make_all: async function(ctx)
-	{
-		var __v0 = use("Bayrell.Bundler.BundlerController");
-		var control = await __v0.getController(ctx);
-		for (var i = 0;i < control.modules.count(ctx);i++)
-		{
-			var module = control.modules.item(ctx, i);
-			await control.chainBuildModuleByName(ctx, module.module_name);
 		}
 	},
 	/* ======================= Class Init Functions ======================= */
@@ -301,10 +408,10 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var a = [
 			"task_watch",
 			"task_build",
+			"task_build_all",
+			"task_make",
 			"task_modules",
 			"task_make_symlinks",
-			"task_make",
-			"task_make_all",
 		];
 		return use("Runtime.Collection").from(a);
 	},
@@ -343,7 +450,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 				]),
 			});
 		}
-		if (field_name == "task_modules")
+		if (field_name == "task_build_all")
 		{
 			
 			var __v0 = use("Runtime.Task.TaskMethod");
@@ -355,13 +462,13 @@ Object.assign(Bayrell.Bundler.Tasks,
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_modules",
+				"name": "task_build_all",
 				"annotations": Collection.from([
-					new __v2(ctx, use("Runtime.Dict").from({"alias":"modules"})),
+					new __v2(ctx, use("Runtime.Dict").from({"alias":"build_all"})),
 				]),
 			});
 		}
-		if (field_name == "task_make_symlinks")
+		if (field_name == "task_make")
 		{
 			
 			var __v0 = use("Runtime.Task.TaskMethod");
@@ -374,13 +481,13 @@ Object.assign(Bayrell.Bundler.Tasks,
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_make_symlinks",
+				"name": "task_make",
 				"annotations": Collection.from([
-					new __v3(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
+					new __v3(ctx, use("Runtime.Dict").from({"alias":"make"})),
 				]),
 			});
 		}
-		if (field_name == "task_make")
+		if (field_name == "task_modules")
 		{
 			
 			var __v0 = use("Runtime.Task.TaskMethod");
@@ -394,13 +501,13 @@ Object.assign(Bayrell.Bundler.Tasks,
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_make",
+				"name": "task_modules",
 				"annotations": Collection.from([
-					new __v4(ctx, use("Runtime.Dict").from({"alias":"make"})),
+					new __v4(ctx, use("Runtime.Dict").from({"alias":"modules"})),
 				]),
 			});
 		}
-		if (field_name == "task_make_all")
+		if (field_name == "task_make_symlinks")
 		{
 			
 			var __v0 = use("Runtime.Task.TaskMethod");
@@ -415,9 +522,9 @@ Object.assign(Bayrell.Bundler.Tasks,
 			return new IntrospectionInfo(ctx, {
 				"kind": IntrospectionInfo.ITEM_METHOD,
 				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_make_all",
+				"name": "task_make_symlinks",
 				"annotations": Collection.from([
-					new __v5(ctx, use("Runtime.Dict").from({"alias":"make_all"})),
+					new __v5(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
 				]),
 			});
 		}

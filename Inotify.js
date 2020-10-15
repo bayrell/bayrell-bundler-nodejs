@@ -291,6 +291,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "ctx") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -298,6 +299,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "inotify") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -305,6 +307,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "data") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -312,6 +315,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "descriptors") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "Runtime.Map",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -319,6 +323,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "watchers") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "Runtime.Map",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -326,6 +331,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "onChangeFileTimeouts") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -333,6 +339,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "onChangeFile") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -340,6 +347,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "changeTimeout") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

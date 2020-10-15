@@ -188,6 +188,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "file_path") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -195,6 +196,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "ext") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -202,6 +204,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "module") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "Bayrell.Bundler.Module",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -209,6 +212,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "content") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -216,6 +220,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "ast") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "var",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -223,6 +228,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "stop") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -230,6 +236,7 @@ Object.assign(Bayrell.Bundler.ChainFile,
 		if (field_name == "parse_error") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainFile",
+			"t": "Runtime.Exceptions.RuntimeException",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

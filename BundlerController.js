@@ -101,6 +101,31 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 	/**
 	 * Run module build chain
 	 */
+	makeBundle: async function(ctx, bundle_conf)
+	{
+		/* Get modules */
+		var __v0 = use("Runtime.Monad");
+		var __v1 = new __v0(ctx, bundle_conf);
+		__v1 = __v1.attr(ctx, "modules");
+		var __v2 = use("Runtime.rtl");
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Collection", use("Runtime.Collection").from([])));
+		var modules = __v1.value(ctx);
+		/* Build modules */
+		for (var j = 0;j < modules.count(ctx);j++)
+		{
+			var module_name = modules.item(ctx, j);
+			if (Runtime.rtl.get(ctx, module_name, 0) == "@")
+			{
+				continue;
+			}
+			await this.chainBuildModuleByName(ctx, module_name);
+		}
+		/* Make bundle */
+		await this.chainBundle(ctx, bundle_conf);
+	},
+	/**
+	 * Run module build chain
+	 */
 	bundleByModule: async function(ctx, module_name)
 	{
 		var module = this.findModuleByName(ctx, module_name);
@@ -131,33 +156,50 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		for (var j = 0;j < build_modules.count(ctx);j++)
 		{
 			var module_name = build_modules.item(ctx, j);
-			var __v4 = use("Runtime.lib");
-			var module = this.modules.findItem(ctx, __v4.equalAttr(ctx, "module_name", module_name));
-			if (module != null)
+			/* Module file */
+			if (Runtime.rtl.get(ctx, module_name, 0) == "@")
 			{
-				modules_to_build.push(ctx, module);
+				var __v4 = use("Runtime.rs");
+				module_name = __v4.substr(ctx, module_name, 1);
+				var __v5 = use("Runtime.rs");
+				var __v6 = use("Runtime.lib");
+				var arr = __v5.split(ctx, "/", module_name).filter(ctx, __v6.equalNot(ctx, ""));
+				module_name = Runtime.rtl.get(ctx, arr, 0);
+				var __v7 = use("Runtime.rs");
+				var file_name = __v7.join(ctx, "/", arr.slice(ctx, 1));
+				var __v8 = use("Runtime.lib");
+				var module = this.modules.findItem(ctx, __v8.equalAttr(ctx, "module_name", module_name));
+				if (module != null)
+				{
+					var __v9 = use("Bayrell.Bundler.ModuleFile");
+					var file = new __v9(ctx, use("Runtime.Dict").from({"file_name":file_name,"module_name":module_name,"lib_path":module.lib_path}));
+					modules_to_build.push(ctx, file);
+				}
+			}
+			else
+			{
+				var __v9 = use("Runtime.lib");
+				var module = this.modules.findItem(ctx, __v9.equalAttr(ctx, "module_name", module_name));
+				if (module != null)
+				{
+					modules_to_build.push(ctx, module);
+				}
 			}
 		}
 		var __v4 = use("Runtime.Monad");
 		var __v5 = new __v4(ctx, bundle_conf);
-		__v5 = __v5.attr(ctx, "dest");
+		__v5 = __v5.attr(ctx, "lang");
 		var __v6 = use("Runtime.rtl");
 		__v5 = __v5.monad(ctx, __v6.m_to(ctx, "string", ""));
-		var dest = __v5.value(ctx);
+		var lang = __v5.value(ctx);
 		var __v7 = use("Runtime.Monad");
 		var __v8 = new __v7(ctx, bundle_conf);
-		__v8 = __v8.attr(ctx, "lang");
+		__v8 = __v8.attr(ctx, "dest");
 		var __v9 = use("Runtime.rtl");
 		__v8 = __v8.monad(ctx, __v9.m_to(ctx, "string", ""));
-		var lang = __v8.value(ctx);
-		var __v10 = use("Runtime.Monad");
-		var __v11 = new __v10(ctx, bundle_conf);
-		__v11 = __v11.attr(ctx, "dest");
-		var __v12 = use("Runtime.rtl");
-		__v11 = __v11.monad(ctx, __v12.m_to(ctx, "string", ""));
-		var dest = __v11.value(ctx);
-		var __v13 = use("Bayrell.Bundler.ChainBundle");
-		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v13(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
+		var dest = __v8.value(ctx);
+		var __v10 = use("Bayrell.Bundler.ChainBundle");
+		await ctx.chainAsync(ctx, this.constructor.CHAIN_BUNDLE, use("Runtime.Collection").from([this,new __v10(ctx, use("Runtime.Dict").from({"modules":modules_to_build.toCollection(ctx),"lang":lang,"dest":dest}))]));
 	},
 	_init: function(ctx)
 	{
@@ -361,6 +403,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "CHAIN_BUILD_MODULE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -368,6 +411,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "CHAIN_BUILD_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -375,6 +419,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "CHAIN_BUILD_FILE_CHECK") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -382,6 +427,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "CHAIN_BUNDLE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -389,6 +435,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "BUILD_FILE_FILTER") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -396,6 +443,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "BUILD_FILE_READ_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -403,6 +451,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "BUILD_FILE_PARSE_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -410,6 +459,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "BUILD_FILE_SAVE_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "int",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -417,6 +467,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "config") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "Runtime.Dict",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -424,6 +475,8 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "modules") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "Runtime.Collection",
+			"s": ["Bayrell.Bundler.Module"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -431,6 +484,8 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "languages") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "Runtime.Collection",
+			"s": ["string"],
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -438,6 +493,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "log_files") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "bool",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -445,6 +501,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "output") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"t": "Runtime.Task.TaskDriver",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),

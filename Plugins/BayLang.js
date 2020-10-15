@@ -235,50 +235,72 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 	 */
 	getTranslator: function(ctx, control, file, lang)
 	{
+		/* Get config */
+		var __v0 = use("Runtime.Monad");
+		var __v1 = new __v0(ctx, control.config);
+		__v1 = __v1.attr(ctx, "options");
+		__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
+		__v1 = __v1.attr(ctx, lang);
+		var __v2 = use("Runtime.rtl");
+		__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Dict", use("Runtime.Dict").from({})));
+		var conf = __v1.value(ctx);
+		var __v3 = use("Runtime.Monad");
+		var __v4 = new __v3(ctx, Runtime.rtl.get(ctx, conf, "backend"));
+		var __v5 = use("Runtime.rtl");
+		__v4 = __v4.monad(ctx, __v5.m_to(ctx, "bool", false));
+		var backend = __v4.value(ctx);
+		var __v6 = use("Runtime.Monad");
+		var __v7 = new __v6(ctx, Runtime.rtl.get(ctx, conf, "frontend"));
+		var __v8 = use("Runtime.rtl");
+		__v7 = __v7.monad(ctx, __v8.m_to(ctx, "bool", false));
+		var frontend = __v7.value(ctx);
+		var __v9 = use("Runtime.Monad");
+		var __v10 = new __v9(ctx, Runtime.rtl.get(ctx, conf, "enable_context"));
+		var __v11 = use("Runtime.rtl");
+		__v10 = __v10.monad(ctx, __v11.m_to(ctx, "bool", false));
+		var enable_context = __v10.value(ctx);
+		var __v12 = use("Runtime.Monad");
+		var __v13 = new __v12(ctx, Runtime.rtl.get(ctx, conf, "enable_check_types"));
+		var __v14 = use("Runtime.rtl");
+		__v13 = __v13.monad(ctx, __v14.m_to(ctx, "bool", false));
+		var enable_check_types = __v13.value(ctx);
+		var __v15 = use("Runtime.Monad");
+		var __v16 = new __v15(ctx, Runtime.rtl.get(ctx, conf, "enable_async_await"));
+		var __v17 = use("Runtime.rtl");
+		__v16 = __v16.monad(ctx, __v17.m_to(ctx, "bool", true));
+		var enable_async_await = __v16.value(ctx);
+		var __v18 = use("Runtime.Monad");
+		var __v19 = new __v18(ctx, Runtime.rtl.get(ctx, conf, "emulate_async_await"));
+		var __v20 = use("Runtime.rtl");
+		__v19 = __v19.monad(ctx, __v20.m_to(ctx, "bool", false));
+		var emulate_async_await = __v19.value(ctx);
+		var __v21 = use("Runtime.Monad");
+		var __v22 = new __v21(ctx, Runtime.rtl.get(ctx, conf, "use_module_name"));
+		var __v23 = use("Runtime.rtl");
+		__v22 = __v22.monad(ctx, __v23.m_to(ctx, "bool", false));
+		var use_module_name = __v22.value(ctx);
+		var __v24 = use("Runtime.Monad");
+		var __v25 = new __v24(ctx, Runtime.rtl.get(ctx, conf, "use_strict"));
+		var __v26 = use("Runtime.rtl");
+		__v25 = __v25.monad(ctx, __v26.m_to(ctx, "bool", false));
+		var use_strict = __v25.value(ctx);
 		if (lang == "php")
 		{
-			var __v0 = use("Bayrell.Lang.LangPHP.TranslatorPHP");
-			return new __v0(ctx, use("Runtime.Dict").from({}));
+			/* Create translator */
+			var __v27 = use("Bayrell.Lang.LangPHP.TranslatorPHP");
+			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types}));
 		}
 		if (lang == "es6")
 		{
-			/* Get config */
-			var __v0 = use("Runtime.Monad");
-			var __v1 = new __v0(ctx, control.config);
-			__v1 = __v1.attr(ctx, "options");
-			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
-			__v1 = __v1.attr(ctx, "es6");
-			var __v2 = use("Runtime.rtl");
-			__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Dict", use("Runtime.Dict").from({})));
-			var conf = __v1.value(ctx);
-			/* Get settings */
-			var use_module_name = conf.get(ctx, "use_module_name", false);
-			var use_strict = conf.get(ctx, "use_strict", true);
-			var enable_async_await = conf.get(ctx, "enable_async_await", true);
-			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
 			/* Create translator */
-			var __v3 = use("Bayrell.Lang.LangES6.TranslatorES6");
-			return new __v3(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
+			var __v27 = use("Bayrell.Lang.LangES6.TranslatorES6");
+			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
 		}
 		if (lang == "nodejs")
 		{
-			/* Get config */
-			var __v0 = use("Runtime.Monad");
-			var __v1 = new __v0(ctx, control.config);
-			__v1 = __v1.attr(ctx, "options");
-			__v1 = __v1.attr(ctx, "Bayrell.Bundler.Plugins.BayLang");
-			__v1 = __v1.attr(ctx, "nodejs");
-			var __v2 = use("Runtime.rtl");
-			__v1 = __v1.monad(ctx, __v2.m_to(ctx, "Runtime.Dict", use("Runtime.Dict").from({})));
-			var conf = __v1.value(ctx);
-			/* Get settings */
-			var use_module_name = conf.get(ctx, "use_module_name", false);
-			var use_strict = conf.get(ctx, "use_strict", true);
-			var enable_async_await = conf.get(ctx, "enable_async_await", true);
-			var emulate_async_await = conf.get(ctx, "emulate_async_await", false);
 			/* Create translator */
-			var __v3 = use("Bayrell.Lang.LangNode.TranslatorNode");
-			return new __v3(ctx, use("Runtime.Dict").from({"use_module_name":use_module_name,"use_strict":use_strict,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await}));
+			var __v27 = use("Bayrell.Lang.LangNode.TranslatorNode");
+			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
 		}
 		return null;
 	},

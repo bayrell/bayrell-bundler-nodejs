@@ -116,6 +116,7 @@ Object.assign(Bayrell.Bundler.Module,
 		if (field_name == "module_name") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Module",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
@@ -123,6 +124,7 @@ Object.assign(Bayrell.Bundler.Module,
 		if (field_name == "lib_path") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Module",
+			"t": "string",
 			"name": field_name,
 			"annotations": Collection.from([
 			]),
