@@ -58,7 +58,7 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.8";
+		return "0.10.9";
 	},
 	/**
 	 * Returns required modules

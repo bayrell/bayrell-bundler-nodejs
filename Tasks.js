@@ -362,6 +362,16 @@ Object.assign(Bayrell.Bundler.Tasks,
 			/*static::make_link(module_path, assets_path, "es6");*/
 		}
 	},
+	/**
+	 * Version
+	 */
+	version: async function(ctx)
+	{
+		var __v0 = use("Bayrell.Bundler.BundlerController");
+		var control = await __v0.getController(ctx);
+		var __v1 = use("Bayrell.Lang.ModuleDescription");
+		control.writeln(ctx, "Version: " + use("Runtime.rtl").toStr(__v1.getModuleVersion(ctx)));
+	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
 	{
@@ -412,6 +422,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			"task_make",
 			"task_modules",
 			"task_make_symlinks",
+			"version",
 		];
 		return use("Runtime.Collection").from(a);
 	},
@@ -525,6 +536,28 @@ Object.assign(Bayrell.Bundler.Tasks,
 				"name": "task_make_symlinks",
 				"annotations": Collection.from([
 					new __v5(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
+				]),
+			});
+		}
+		if (field_name == "version")
+		{
+			
+			var __v0 = use("Runtime.Task.TaskMethod");
+			var __v1 = use("Runtime.Task.TaskMethod");
+			var __v2 = use("Runtime.Task.TaskMethod");
+			var __v3 = use("Runtime.Task.TaskMethod");
+			var __v4 = use("Runtime.Task.TaskMethod");
+			var __v5 = use("Runtime.Task.TaskMethod");
+			var __v6 = use("Runtime.Task.TaskMethod");
+			var Collection = use("Runtime.Collection");
+			var Dict = use("Runtime.Dict");
+			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+			return new IntrospectionInfo(ctx, {
+				"kind": IntrospectionInfo.ITEM_METHOD,
+				"class_name": "Bayrell.Bundler.Tasks",
+				"name": "version",
+				"annotations": Collection.from([
+					new __v6(ctx, use("Runtime.Dict").from({"alias":"version"})),
 				]),
 			});
 		}
