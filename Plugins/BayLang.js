@@ -28,22 +28,6 @@ Bayrell.Bundler.Plugins.BayLang.prototype = Object.create(use("Bayrell.Bundler.P
 Bayrell.Bundler.Plugins.BayLang.prototype.constructor = Bayrell.Bundler.Plugins.BayLang;
 Object.assign(Bayrell.Bundler.Plugins.BayLang.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Bundler.Plugins.BayLang"))
-		{
-		}
-		use("Bayrell.Bundler.Plugin").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		use("Bayrell.Bundler.Plugin").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		return use("Bayrell.Bundler.Plugin").prototype.takeValue.call(this,ctx,k,d);
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Plugins.BayLang";
@@ -270,37 +254,42 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		__v16 = __v16.monad(ctx, __v17.m_to(ctx, "bool", true));
 		var enable_async_await = __v16.value(ctx);
 		var __v18 = use("Runtime.Monad");
-		var __v19 = new __v18(ctx, Runtime.rtl.get(ctx, conf, "emulate_async_await"));
+		var __v19 = new __v18(ctx, Runtime.rtl.get(ctx, conf, "enable_introspection"));
 		var __v20 = use("Runtime.rtl");
 		__v19 = __v19.monad(ctx, __v20.m_to(ctx, "bool", false));
-		var emulate_async_await = __v19.value(ctx);
+		var enable_introspection = __v19.value(ctx);
 		var __v21 = use("Runtime.Monad");
-		var __v22 = new __v21(ctx, Runtime.rtl.get(ctx, conf, "use_module_name"));
+		var __v22 = new __v21(ctx, Runtime.rtl.get(ctx, conf, "emulate_async_await"));
 		var __v23 = use("Runtime.rtl");
 		__v22 = __v22.monad(ctx, __v23.m_to(ctx, "bool", false));
-		var use_module_name = __v22.value(ctx);
+		var emulate_async_await = __v22.value(ctx);
 		var __v24 = use("Runtime.Monad");
-		var __v25 = new __v24(ctx, Runtime.rtl.get(ctx, conf, "use_strict"));
+		var __v25 = new __v24(ctx, Runtime.rtl.get(ctx, conf, "use_module_name"));
 		var __v26 = use("Runtime.rtl");
 		__v25 = __v25.monad(ctx, __v26.m_to(ctx, "bool", false));
-		var use_strict = __v25.value(ctx);
+		var use_module_name = __v25.value(ctx);
+		var __v27 = use("Runtime.Monad");
+		var __v28 = new __v27(ctx, Runtime.rtl.get(ctx, conf, "use_strict"));
+		var __v29 = use("Runtime.rtl");
+		__v28 = __v28.monad(ctx, __v29.m_to(ctx, "bool", false));
+		var use_strict = __v28.value(ctx);
 		if (lang == "php")
 		{
 			/* Create translator */
-			var __v27 = use("Bayrell.Lang.LangPHP.TranslatorPHP");
-			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types}));
+			var __v30 = use("Bayrell.Lang.LangPHP.TranslatorPHP");
+			return new __v30(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_introspection":enable_introspection}));
 		}
 		if (lang == "es6")
 		{
 			/* Create translator */
-			var __v27 = use("Bayrell.Lang.LangES6.TranslatorES6");
-			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
+			var __v30 = use("Bayrell.Lang.LangES6.TranslatorES6");
+			return new __v30(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"enable_introspection":enable_introspection,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
 		}
 		if (lang == "nodejs")
 		{
 			/* Create translator */
-			var __v27 = use("Bayrell.Lang.LangNode.TranslatorNode");
-			return new __v27(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
+			var __v30 = use("Bayrell.Lang.LangNode.TranslatorNode");
+			return new __v30(ctx, use("Runtime.Dict").from({"backend":backend,"frontend":frontend,"enable_context":enable_context,"enable_check_types":enable_check_types,"enable_async_await":enable_async_await,"enable_introspection":enable_introspection,"emulate_async_await":emulate_async_await,"use_module_name":use_module_name,"use_strict":use_strict}));
 		}
 		return null;
 	},
@@ -343,9 +332,11 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

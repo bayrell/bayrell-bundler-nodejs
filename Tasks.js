@@ -24,19 +24,6 @@ Bayrell.Bundler.Tasks = function(ctx)
 };
 Object.assign(Bayrell.Bundler.Tasks.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Bundler.Tasks"))
-		{
-		}
-	},
-	assignValue: function(ctx,k,v)
-	{
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Tasks";
@@ -413,9 +400,11 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 			"task_watch",
 			"task_build",
 			"task_build_all",
@@ -430,138 +419,138 @@ Object.assign(Bayrell.Bundler.Tasks,
 	{
 		if (field_name == "task_watch")
 		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
+		
+		var __v0 = use("Runtime.Task.TaskMethod");
 			var Collection = use("Runtime.Collection");
 			var Dict = use("Runtime.Dict");
 			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_watch",
-				"annotations": Collection.from([
-					new __v0(ctx, use("Runtime.Dict").from({"alias":"watch"})),
-				]),
-			});
-		}
-		if (field_name == "task_build")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_build",
-				"annotations": Collection.from([
-					new __v1(ctx, use("Runtime.Dict").from({"alias":"build"})),
-				]),
-			});
-		}
-		if (field_name == "task_build_all")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var __v2 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_build_all",
-				"annotations": Collection.from([
-					new __v2(ctx, use("Runtime.Dict").from({"alias":"build_all"})),
-				]),
-			});
-		}
-		if (field_name == "task_make")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var __v2 = use("Runtime.Task.TaskMethod");
-			var __v3 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_make",
-				"annotations": Collection.from([
-					new __v3(ctx, use("Runtime.Dict").from({"alias":"make"})),
-				]),
-			});
-		}
-		if (field_name == "task_modules")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var __v2 = use("Runtime.Task.TaskMethod");
-			var __v3 = use("Runtime.Task.TaskMethod");
-			var __v4 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_modules",
-				"annotations": Collection.from([
-					new __v4(ctx, use("Runtime.Dict").from({"alias":"modules"})),
-				]),
-			});
-		}
-		if (field_name == "task_make_symlinks")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var __v2 = use("Runtime.Task.TaskMethod");
-			var __v3 = use("Runtime.Task.TaskMethod");
-			var __v4 = use("Runtime.Task.TaskMethod");
-			var __v5 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "task_make_symlinks",
-				"annotations": Collection.from([
-					new __v5(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
-				]),
-			});
-		}
-		if (field_name == "version")
-		{
-			
-			var __v0 = use("Runtime.Task.TaskMethod");
-			var __v1 = use("Runtime.Task.TaskMethod");
-			var __v2 = use("Runtime.Task.TaskMethod");
-			var __v3 = use("Runtime.Task.TaskMethod");
-			var __v4 = use("Runtime.Task.TaskMethod");
-			var __v5 = use("Runtime.Task.TaskMethod");
-			var __v6 = use("Runtime.Task.TaskMethod");
-			var Collection = use("Runtime.Collection");
-			var Dict = use("Runtime.Dict");
-			var IntrospectionInfo = use("Runtime.IntrospectionInfo");
-			return new IntrospectionInfo(ctx, {
-				"kind": IntrospectionInfo.ITEM_METHOD,
-				"class_name": "Bayrell.Bundler.Tasks",
-				"name": "version",
-				"annotations": Collection.from([
-					new __v6(ctx, use("Runtime.Dict").from({"alias":"version"})),
-				]),
-			});
-		}
-		return null;
-	},
+			"kind": IntrospectionInfo.ITEM_METHOD,
+			"class_name": "Bayrell.Bundler.Tasks",
+			"name": "task_watch",
+			"annotations": Collection.from([
+				new __v0(ctx, use("Runtime.Dict").from({"alias":"watch"})),
+			]),
+		});
+	}
+	if (field_name == "task_build")
+	{
+	
+	var __v0 = use("Runtime.Task.TaskMethod");
+	var __v1 = use("Runtime.Task.TaskMethod");
+		var Collection = use("Runtime.Collection");
+		var Dict = use("Runtime.Dict");
+		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+		return new IntrospectionInfo(ctx, {
+		"kind": IntrospectionInfo.ITEM_METHOD,
+		"class_name": "Bayrell.Bundler.Tasks",
+		"name": "task_build",
+		"annotations": Collection.from([
+			new __v1(ctx, use("Runtime.Dict").from({"alias":"build"})),
+		]),
+	});
+}
+if (field_name == "task_build_all")
+{
+
+var __v0 = use("Runtime.Task.TaskMethod");
+var __v1 = use("Runtime.Task.TaskMethod");
+var __v2 = use("Runtime.Task.TaskMethod");
+	var Collection = use("Runtime.Collection");
+	var Dict = use("Runtime.Dict");
+	var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+	return new IntrospectionInfo(ctx, {
+	"kind": IntrospectionInfo.ITEM_METHOD,
+	"class_name": "Bayrell.Bundler.Tasks",
+	"name": "task_build_all",
+	"annotations": Collection.from([
+		new __v2(ctx, use("Runtime.Dict").from({"alias":"build_all"})),
+	]),
+});
+}
+if (field_name == "task_make")
+{
+
+var __v0 = use("Runtime.Task.TaskMethod");
+var __v1 = use("Runtime.Task.TaskMethod");
+var __v2 = use("Runtime.Task.TaskMethod");
+var __v3 = use("Runtime.Task.TaskMethod");
+var Collection = use("Runtime.Collection");
+var Dict = use("Runtime.Dict");
+var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+return new IntrospectionInfo(ctx, {
+"kind": IntrospectionInfo.ITEM_METHOD,
+"class_name": "Bayrell.Bundler.Tasks",
+"name": "task_make",
+"annotations": Collection.from([
+	new __v3(ctx, use("Runtime.Dict").from({"alias":"make"})),
+]),
+});
+}
+if (field_name == "task_modules")
+{
+
+var __v0 = use("Runtime.Task.TaskMethod");
+var __v1 = use("Runtime.Task.TaskMethod");
+var __v2 = use("Runtime.Task.TaskMethod");
+var __v3 = use("Runtime.Task.TaskMethod");
+var __v4 = use("Runtime.Task.TaskMethod");
+var Collection = use("Runtime.Collection");
+var Dict = use("Runtime.Dict");
+var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+return new IntrospectionInfo(ctx, {
+"kind": IntrospectionInfo.ITEM_METHOD,
+"class_name": "Bayrell.Bundler.Tasks",
+"name": "task_modules",
+"annotations": Collection.from([
+new __v4(ctx, use("Runtime.Dict").from({"alias":"modules"})),
+]),
+});
+}
+if (field_name == "task_make_symlinks")
+{
+
+var __v0 = use("Runtime.Task.TaskMethod");
+var __v1 = use("Runtime.Task.TaskMethod");
+var __v2 = use("Runtime.Task.TaskMethod");
+var __v3 = use("Runtime.Task.TaskMethod");
+var __v4 = use("Runtime.Task.TaskMethod");
+var __v5 = use("Runtime.Task.TaskMethod");
+var Collection = use("Runtime.Collection");
+var Dict = use("Runtime.Dict");
+var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+return new IntrospectionInfo(ctx, {
+"kind": IntrospectionInfo.ITEM_METHOD,
+"class_name": "Bayrell.Bundler.Tasks",
+"name": "task_make_symlinks",
+"annotations": Collection.from([
+new __v5(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
+]),
+});
+}
+if (field_name == "version")
+{
+
+var __v0 = use("Runtime.Task.TaskMethod");
+var __v1 = use("Runtime.Task.TaskMethod");
+var __v2 = use("Runtime.Task.TaskMethod");
+var __v3 = use("Runtime.Task.TaskMethod");
+var __v4 = use("Runtime.Task.TaskMethod");
+var __v5 = use("Runtime.Task.TaskMethod");
+var __v6 = use("Runtime.Task.TaskMethod");
+var Collection = use("Runtime.Collection");
+var Dict = use("Runtime.Dict");
+var IntrospectionInfo = use("Runtime.IntrospectionInfo");
+return new IntrospectionInfo(ctx, {
+"kind": IntrospectionInfo.ITEM_METHOD,
+"class_name": "Bayrell.Bundler.Tasks",
+"name": "version",
+"annotations": Collection.from([
+new __v6(ctx, use("Runtime.Dict").from({"alias":"version"})),
+]),
+});
+}
+return null;
+},
 });use.add(Bayrell.Bundler.Tasks);
 module.exports = Bayrell.Bundler.Tasks;

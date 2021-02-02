@@ -28,22 +28,6 @@ Bayrell.Bundler.Plugins.FilesPHP.prototype = Object.create(use("Bayrell.Bundler.
 Bayrell.Bundler.Plugins.FilesPHP.prototype.constructor = Bayrell.Bundler.Plugins.FilesPHP;
 Object.assign(Bayrell.Bundler.Plugins.FilesPHP.prototype,
 {
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Bundler.Plugins.FilesPHP"))
-		{
-		}
-		use("Bayrell.Bundler.Plugin").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		use("Bayrell.Bundler.Plugin").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		return use("Bayrell.Bundler.Plugin").prototype.takeValue.call(this,ctx,k,d);
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Plugins.FilesPHP";
@@ -198,9 +182,11 @@ Object.assign(Bayrell.Bundler.Plugins.FilesPHP,
 		var IntrospectionInfo = use("Runtime.IntrospectionInfo");
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

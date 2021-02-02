@@ -167,7 +167,7 @@ Object.assign(Bayrell.Bundler.ChainModule,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|3)==3)
+		if ((f&3)==3)
 		{
 			a.push("module");
 			a.push("files");
@@ -183,33 +183,35 @@ Object.assign(Bayrell.Bundler.ChainModule,
 		if (field_name == "module") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainModule",
-			"t": "Bayrell.Bundler.Module",
 			"name": field_name,
+			"t": "Bayrell.Bundler.Module",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "files") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainModule",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "stop") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.ChainModule",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

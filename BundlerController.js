@@ -210,37 +210,6 @@ Object.assign(Bayrell.Bundler.BundlerController.prototype,
 		this.output = null;
 		use("Runtime.Core.CoreObject").prototype._init.call(this,ctx);
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Bundler.BundlerController"))
-		{
-			this.config = o.config;
-			this.modules = o.modules;
-			this.languages = o.languages;
-			this.log_files = o.log_files;
-			this.output = o.output;
-		}
-		use("Runtime.Core.CoreObject").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "config")this.config = v;
-		else if (k == "modules")this.modules = v;
-		else if (k == "languages")this.languages = v;
-		else if (k == "log_files")this.log_files = v;
-		else if (k == "output")this.output = v;
-		else use("Runtime.Core.CoreObject").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "config")return this.config;
-		else if (k == "modules")return this.modules;
-		else if (k == "languages")return this.languages;
-		else if (k == "log_files")return this.log_files;
-		else if (k == "output")return this.output;
-		return use("Runtime.Core.CoreObject").prototype.takeValue.call(this,ctx,k,d);
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.BundlerController";
@@ -385,7 +354,7 @@ Object.assign(Bayrell.Bundler.BundlerController,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|2)==2)
+		if ((f&2)==2)
 		{
 			a.push("config");
 			a.push("modules");
@@ -403,114 +372,116 @@ Object.assign(Bayrell.Bundler.BundlerController,
 		if (field_name == "CHAIN_BUILD_MODULE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "CHAIN_BUILD_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "CHAIN_BUILD_FILE_CHECK") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "CHAIN_BUNDLE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "string",
 			"name": field_name,
+			"t": "string",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "BUILD_FILE_FILTER") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "BUILD_FILE_READ_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "BUILD_FILE_PARSE_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "BUILD_FILE_SAVE_FILE") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "config") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "Runtime.Dict",
 			"name": field_name,
+			"t": "Runtime.Dict",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "modules") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["Bayrell.Bundler.Module"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "languages") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
+			"name": field_name,
 			"t": "Runtime.Collection",
 			"s": ["string"],
-			"name": field_name,
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "log_files") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "bool",
 			"name": field_name,
+			"t": "bool",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "output") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.BundlerController",
-			"t": "Runtime.Task.TaskDriver",
 			"name": field_name,
+			"t": "Runtime.Task.TaskDriver",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},

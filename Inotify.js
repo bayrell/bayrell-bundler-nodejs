@@ -192,46 +192,6 @@ Object.assign(Bayrell.Bundler.Inotify.prototype,
 		this.changeTimeout = 500;
 		use("Runtime.Core.CoreObject").prototype._init.call(this,ctx);
 	},
-	assignObject: function(ctx,o)
-	{
-		if (o instanceof use("Bayrell.Bundler.Inotify"))
-		{
-			this.ctx = o.ctx;
-			this.inotify = o.inotify;
-			this.data = o.data;
-			this.descriptors = o.descriptors;
-			this.watchers = o.watchers;
-			this.onChangeFileTimeouts = o.onChangeFileTimeouts;
-			this.onChangeFile = o.onChangeFile;
-			this.changeTimeout = o.changeTimeout;
-		}
-		use("Runtime.Core.CoreObject").prototype.assignObject.call(this,ctx,o);
-	},
-	assignValue: function(ctx,k,v)
-	{
-		if (k == "ctx")this.ctx = v;
-		else if (k == "inotify")this.inotify = v;
-		else if (k == "data")this.data = v;
-		else if (k == "descriptors")this.descriptors = v;
-		else if (k == "watchers")this.watchers = v;
-		else if (k == "onChangeFileTimeouts")this.onChangeFileTimeouts = v;
-		else if (k == "onChangeFile")this.onChangeFile = v;
-		else if (k == "changeTimeout")this.changeTimeout = v;
-		else use("Runtime.Core.CoreObject").prototype.assignValue.call(this,ctx,k,v);
-	},
-	takeValue: function(ctx,k,d)
-	{
-		if (d == undefined) d = null;
-		if (k == "ctx")return this.ctx;
-		else if (k == "inotify")return this.inotify;
-		else if (k == "data")return this.data;
-		else if (k == "descriptors")return this.descriptors;
-		else if (k == "watchers")return this.watchers;
-		else if (k == "onChangeFileTimeouts")return this.onChangeFileTimeouts;
-		else if (k == "onChangeFile")return this.onChangeFile;
-		else if (k == "changeTimeout")return this.changeTimeout;
-		return use("Runtime.Core.CoreObject").prototype.takeValue.call(this,ctx,k,d);
-	},
 	getClassName: function(ctx)
 	{
 		return "Bayrell.Bundler.Inotify";
@@ -270,7 +230,7 @@ Object.assign(Bayrell.Bundler.Inotify,
 	{
 		var a = [];
 		if (f==undefined) f=0;
-		if ((f|2)==2)
+		if ((f&2)==2)
 		{
 			a.push("ctx");
 			a.push("inotify");
@@ -291,72 +251,74 @@ Object.assign(Bayrell.Bundler.Inotify,
 		if (field_name == "ctx") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "var",
 			"name": field_name,
+			"t": "var",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "inotify") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "var",
 			"name": field_name,
+			"t": "var",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "data") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "var",
 			"name": field_name,
+			"t": "var",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "descriptors") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "Runtime.Map",
 			"name": field_name,
+			"t": "Runtime.Map",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "watchers") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "Runtime.Map",
 			"name": field_name,
+			"t": "Runtime.Map",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "onChangeFileTimeouts") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "var",
 			"name": field_name,
+			"t": "var",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "onChangeFile") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "var",
 			"name": field_name,
+			"t": "var",
 			"annotations": Collection.from([
 			]),
 		});
 		if (field_name == "changeTimeout") return new IntrospectionInfo(ctx, {
 			"kind": IntrospectionInfo.ITEM_FIELD,
 			"class_name": "Bayrell.Bundler.Inotify",
-			"t": "int",
 			"name": field_name,
+			"t": "int",
 			"annotations": Collection.from([
 			]),
 		});
 		return null;
 	},
-	getMethodsList: function(ctx)
+	getMethodsList: function(ctx,f)
 	{
-		var a = [
+		if (f==undefined) f=0;
+		var a = [];
+		if ((f&4)==4) a=[
 		];
 		return use("Runtime.Collection").from(a);
 	},
