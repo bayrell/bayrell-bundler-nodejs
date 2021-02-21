@@ -357,7 +357,11 @@ Object.assign(Bayrell.Bundler.Tasks,
 		var __v0 = use("Bayrell.Bundler.BundlerController");
 		var control = await __v0.getController(ctx);
 		var __v1 = use("Bayrell.Lang.ModuleDescription");
-		control.writeln(ctx, "Version: " + use("Runtime.rtl").toStr(__v1.getModuleVersion(ctx)));
+		control.writeln(ctx, "Lang version: " + use("Runtime.rtl").toStr(__v1.getModuleVersion(ctx)));
+		var __v2 = use("Bayrell.Bundler.ModuleDescription");
+		control.writeln(ctx, "Bundler version: " + use("Runtime.rtl").toStr(__v2.getModuleVersion(ctx)));
+		var __v3 = use("Runtime.ModuleDescription");
+		control.writeln(ctx, "Runtime version: " + use("Runtime.rtl").toStr(__v3.getModuleVersion(ctx)));
 	},
 	/* ======================= Class Init Functions ======================= */
 	getCurrentNamespace: function()
@@ -428,6 +432,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 			"kind": IntrospectionInfo.ITEM_METHOD,
 			"class_name": "Bayrell.Bundler.Tasks",
 			"name": "task_watch",
+			"async": true,
 			"annotations": Collection.from([
 				new __v0(ctx, use("Runtime.Dict").from({"alias":"watch"})),
 			]),
@@ -445,6 +450,7 @@ Object.assign(Bayrell.Bundler.Tasks,
 		"kind": IntrospectionInfo.ITEM_METHOD,
 		"class_name": "Bayrell.Bundler.Tasks",
 		"name": "task_build",
+		"async": true,
 		"annotations": Collection.from([
 			new __v1(ctx, use("Runtime.Dict").from({"alias":"build"})),
 		]),
@@ -463,6 +469,7 @@ var __v2 = use("Runtime.Task.TaskMethod");
 	"kind": IntrospectionInfo.ITEM_METHOD,
 	"class_name": "Bayrell.Bundler.Tasks",
 	"name": "task_build_all",
+	"async": true,
 	"annotations": Collection.from([
 		new __v2(ctx, use("Runtime.Dict").from({"alias":"build_all"})),
 	]),
@@ -482,6 +489,7 @@ return new IntrospectionInfo(ctx, {
 "kind": IntrospectionInfo.ITEM_METHOD,
 "class_name": "Bayrell.Bundler.Tasks",
 "name": "task_make",
+"async": true,
 "annotations": Collection.from([
 	new __v3(ctx, use("Runtime.Dict").from({"alias":"make"})),
 ]),
@@ -502,6 +510,7 @@ return new IntrospectionInfo(ctx, {
 "kind": IntrospectionInfo.ITEM_METHOD,
 "class_name": "Bayrell.Bundler.Tasks",
 "name": "task_modules",
+"async": true,
 "annotations": Collection.from([
 new __v4(ctx, use("Runtime.Dict").from({"alias":"modules"})),
 ]),
@@ -523,6 +532,7 @@ return new IntrospectionInfo(ctx, {
 "kind": IntrospectionInfo.ITEM_METHOD,
 "class_name": "Bayrell.Bundler.Tasks",
 "name": "task_make_symlinks",
+"async": true,
 "annotations": Collection.from([
 new __v5(ctx, use("Runtime.Dict").from({"alias":"make_symlinks"})),
 ]),
@@ -545,6 +555,7 @@ return new IntrospectionInfo(ctx, {
 "kind": IntrospectionInfo.ITEM_METHOD,
 "class_name": "Bayrell.Bundler.Tasks",
 "name": "version",
+"async": true,
 "annotations": Collection.from([
 new __v6(ctx, use("Runtime.Dict").from({"alias":"version"})),
 ]),

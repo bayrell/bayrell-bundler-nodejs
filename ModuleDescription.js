@@ -45,7 +45,7 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	 */
 	getModuleVersion: function(ctx)
 	{
-		return "0.10.10";
+		return "0.10.11";
 	},
 	/**
 	 * Returns required modules
@@ -97,30 +97,44 @@ Object.assign(Bayrell.Bundler.ModuleDescription,
 	 */
 	appStart: async function(ctx, c)
 	{
-		/* Read project.json from base path */
-		var __v0 = use("Runtime.Monad");
-		var __v2 = use("Runtime.fs");
-		var __v1 = new __v0(ctx, await __v2.readFile(ctx, "project.json", "utf8", ctx.base_path));
-		var __v3 = use("Runtime.rtl");
-		__v1 = __v1.call(ctx, __v3.json_decode.bind(__v3));
-		var __v4 = use("Runtime.rtl");
-		__v1 = __v1.monad(ctx, __v4.m_def(ctx, use("Runtime.Dict").from({})));
-		var json = __v1.value(ctx);
-		/* Set config */
-		c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["settings", "config", "Bayrell.Bundler"]), json);
-		/* Get plugins */
-		var __v5 = use("Runtime.Monad");
-		var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, json, "plugins"));
-		var __v7 = use("Runtime.rtl");
-		__v6 = __v6.monad(ctx, __v7.m_to(ctx, "Runtime.Collection", null));
-		var plugins = __v6.value(ctx);
-		/* Extends entities by plugin */
-		for (var i = 0;i < plugins.count(ctx);i++)
+		try
 		{
-			var plugin = plugins.item(ctx, i);
-			var __v8 = use("Runtime.rtl");
-			var f = __v8.method(ctx, plugin, "extendEntities");
-			c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["entities"]), f(ctx, c, c.entities));
+			/* Read project.json from base path */
+			var __v0 = use("Runtime.Monad");
+			var __v2 = use("Runtime.fs");
+			var __v1 = new __v0(ctx, await __v2.readFile(ctx, "project.json", "utf8", ctx.base_path));
+			var __v3 = use("Runtime.rtl");
+			__v1 = __v1.call(ctx, __v3.json_decode.bind(__v3));
+			var __v4 = use("Runtime.rtl");
+			__v1 = __v1.monad(ctx, __v4.m_def(ctx, use("Runtime.Dict").from({})));
+			var json = __v1.value(ctx);
+			/* Set config */
+			c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["settings", "config", "Bayrell.Bundler"]), json);
+			/* Get plugins */
+			var __v5 = use("Runtime.Monad");
+			var __v6 = new __v5(ctx, Runtime.rtl.get(ctx, json, "plugins"));
+			var __v7 = use("Runtime.rtl");
+			__v6 = __v6.monad(ctx, __v7.m_to(ctx, "Runtime.Collection", null));
+			var plugins = __v6.value(ctx);
+			/* Extends entities by plugin */
+			for (var i = 0;i < plugins.count(ctx);i++)
+			{
+				var plugin = plugins.item(ctx, i);
+				var __v8 = use("Runtime.rtl");
+				var f = __v8.method(ctx, plugin, "extendEntities");
+				c = Runtime.rtl.setAttr(ctx, c, Runtime.Collection.from(["entities"]), f(ctx, c, c.entities));
+			}
+		}
+		catch (_ex)
+		{
+			if (true)
+			{
+				var e = _ex;
+			}
+			else
+			{
+				throw _ex;
+			}
 		}
 		/* Start */
 		return Promise.resolve(await c.constructor.start(ctx, c));

@@ -110,7 +110,8 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		/* Parse file */
 		var __v0 = use("Bayrell.Lang.LangBay.ParserBay");
 		var parser = new __v0(ctx);
-		var __v2 = use("Bayrell.Lang.Exceptions.ParserError");
+		var __v2 = use("Bayrell.Lang.Exceptions.DeclaredClass");
+		var __v3 = use("Bayrell.Lang.Exceptions.ParserError");
 		try
 		{
 			var __v1 = use("Bayrell.Lang.LangUtils");
@@ -120,6 +121,13 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 		catch (_ex)
 		{
 			if (_ex instanceof __v2)
+			{
+				var e = _ex;
+				
+				file = Runtime.rtl.setAttr(ctx, file, Runtime.Collection.from(["ast"]), null);
+				file = Runtime.rtl.setAttr(ctx, file, Runtime.Collection.from(["parse_error"]), e);
+			}
+			else if (_ex instanceof __v3)
 			{
 				var e = _ex;
 				
@@ -157,20 +165,43 @@ Object.assign(Bayrell.Bundler.Plugins.BayLang,
 			}
 			/* Get destination path */
 			var file_path = this.getDestFilePath(ctx, control, file, lang);
-			/* Translate */
-			var __v0 = use("Bayrell.Lang.LangUtils");
-			var content = __v0.translate(ctx, translator, file.ast);
+			var is_skip = false;
+			var content = "";
+			var __v1 = use("Bayrell.Lang.Exceptions.DeclaredClass");
+			try
+			{
+				/* Translate */
+				var __v0 = use("Bayrell.Lang.LangUtils");
+				content = __v0.translate(ctx, translator, file.ast);
+			}
+			catch (_ex)
+			{
+				if (_ex instanceof __v1)
+				{
+					var e = _ex;
+					
+					is_skip = true;
+				}
+				else
+				{
+					throw _ex;
+				}
+			}
+			if (is_skip)
+			{
+				continue;
+			}
 			/* Save to file */
-			var __v1 = use("Runtime.rs");
-			var dir_name = __v1.dirname(ctx, file_path);
+			var __v0 = use("Runtime.rs");
+			var dir_name = __v0.dirname(ctx, file_path);
+			var __v1 = use("Runtime.fs");
+			await __v1.mkdir(ctx, dir_name, ctx.base_path);
 			var __v2 = use("Runtime.fs");
-			await __v2.mkdir(ctx, dir_name, ctx.base_path);
-			var __v3 = use("Runtime.fs");
-			await __v3.saveFile(ctx, file_path, content, "utf8", ctx.base_path);
+			await __v2.saveFile(ctx, file_path, content, "utf8", ctx.base_path);
 			if (control.log_files)
 			{
-				var __v4 = use("Runtime.fs");
-				control.writeln(ctx, "=>" + use("Runtime.rtl").toStr(__v4.concat(ctx, ctx.base_path, file_path)));
+				var __v3 = use("Runtime.fs");
+				control.writeln(ctx, "=>" + use("Runtime.rtl").toStr(__v3.concat(ctx, ctx.base_path, file_path)));
 			}
 		}
 		/* Output ok */
